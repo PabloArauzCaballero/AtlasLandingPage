@@ -39,10 +39,14 @@ python3 -m http.server 8788
    chat y spotlight que sigue al cursor
 7. **Niveles** — camino con 4 nodos que se van encendiendo con el scroll
 8. **Comparativa** — tabla Atlas vs tarjeta de crédito vs prestamista informal
-9. **Comercios** — propuesta B2B + mockup del panel de aliados
-10. **Opiniones** — dos carriles infinitos en direcciones opuestas
-11. **Descarga** — botones de tienda, QR y mockup de compra aprobada
-12. **FAQ**, **CTA final** y **footer**
+9. **Categorías** — grilla de 12 rubros donde se puede comprar
+10. **Comercios** — propuesta B2B + mockup del panel de aliados
+11. **Opiniones** — dos carriles infinitos en direcciones opuestas
+12. **Descarga** — tiendas, QR, requisitos de apertura y mockup de compra aprobada
+13. **FAQ**, **CTA final** y **footer**
+
+Las secciones alternan fondo (`.section` / `.section band`). Si agregas o mueves una,
+respeta la alternancia para que no queden dos del mismo tono pegadas.
 
 ## Re-branding (cuando llegue el manual de marca)
 
@@ -80,6 +84,8 @@ Los textos son **placeholders realistas, no datos verificados**:
 | Niveles | Porcentajes de inicial y montos de cupo de cada nivel |
 | Calculadora | `data-initial` de cada chip, `N` (cuotas) y `EVERY` (días) en `main.js` |
 | Opiniones | **Son ficticias.** Sustituir por testimonios reales con consentimiento |
+| Categorías | Que los 12 rubros coincidan con la red real de aliados |
+| Requisitos (descarga) | Confirmar con legal la edad mínima y los documentos aceptados |
 | Comparativa | Verificar que las afirmaciones sobre tarjetas y prestamistas sean defendibles |
 | Panel de aliados | Cifras de demo |
 | Enlaces de tiendas | Los `href="#"` de App Store / Google Play |

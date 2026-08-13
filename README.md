@@ -234,10 +234,15 @@ Formspree / Mailchimp.
 
 ### Globo WebGL del hero
 
-`assets/js/hero3d.js` dibuja un globo de puntos detrás del teléfono. Lee los colores de
-`--b1/--b2/--b3`, así que **cambia con la paleta** igual que el resto del sitio.
+`assets/js/hero3d.js` dibuja **la red** detrás del teléfono: los puntos son comercios, los
+nodos brillantes las plazas grandes y por los arcos viajan pulsos, que son las compras
+cruzando la red. Lee los colores de `--b1`…`--b4`, así que **cambia con la paleta** igual
+que el resto del sitio.
 
 Lo que lo separa de un efecto de plantilla está todo en los shaders:
+
+- **Luz direccional con terminador.** Sin un lado iluminado y otro en sombra, una esfera se
+  lee plana por más puntos que tenga. Es lo que más aporta de todo lo de aquí.
 
 - Los puntos de la cara oculta se apagan en vez de dibujarse igual: así se percibe un cuerpo
   sólido y no una nube hueca.
@@ -249,7 +254,10 @@ Lo que lo separa de un efecto de plantilla está todo en los shaders:
   `FrontSide` y el Fresnel invertido, el filo queda donde debe: en el limbo.
 
 Se apaga fuera de la vista y con la pestaña oculta, no corre por debajo de 760px de ancho y
-respeta `prefers-reduced-motion`.
+respeta `prefers-reduced-motion`. El scroll lo sigue girando mientras sale de cuadro.
+
+Para subir o bajar su protagonismo: `COUNT` (densidad), el `44.0 / dist` del tamaño de punto
+y, en el CSS, el `mask-image` de `.globe`, que es el que decide cuánto del globo se ve.
 
 ### Escena 3D del hero (CSS)
 

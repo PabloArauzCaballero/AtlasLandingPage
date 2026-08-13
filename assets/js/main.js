@@ -323,6 +323,35 @@
     });
   }
 
+  /* Escena 3D del hero: el mouse inclina el conjunto y cada objeto se
+     desplaza segun su profundidad. Se apaga fuera de la vista. */
+  (function scene3d() {
+    const scene = $('#scene');
+    if (!scene || TOUCH || SOFT) return;
+
+    let tx = 0, ty = 0, x = 0, y = 0, visible = true, raf = null;
+
+    addEventListener('mousemove', (e) => {
+      tx = (e.clientX / innerWidth - 0.5) * 2;
+      ty = (e.clientY / innerHeight - 0.5) * 2;
+      if (raf === null) loop();
+    }, { passive: true });
+
+    function loop() {
+      x += (tx - x) * 0.08;
+      y += (ty - y) * 0.08;
+      scene.style.setProperty('--mx', x.toFixed(4));
+      scene.style.setProperty('--my', y.toFixed(4));
+      const rest = Math.abs(tx - x) < 0.001 && Math.abs(ty - y) < 0.001;
+      raf = (rest || !visible) ? null : requestAnimationFrame(loop);
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; })
+        .observe(scene);
+    }
+  })();
+
   if (!TOUCH) {
     $$('[data-spot]').forEach((el) => {
       el.addEventListener('mousemove', (e) => {

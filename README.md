@@ -69,8 +69,9 @@ pasos de la sección de abajo.
 ## Secciones
 
 1. **Loader** con contador 0→100 y cortina de salida
-2. **Hero** — titular que entra palabra por palabra tras una máscara, aurora animada de fondo,
-   mockup de la app, tarjetas flotantes y contadores
+2. **Hero** — escena 3D: el mockup de la app rodeado de objetos que flotan a distinta
+   profundidad real (tarjeta Atlas, moneda, sello de 0%, una compra al fondo). El mouse
+   inclina la escena y desplaza cada objeto según su distancia
 3. **Ticker** de categorías de comercios
 4. **Tour** — la pieza central: el teléfono queda fijo y **cambia de pantalla mientras haces scroll**
    por los 4 pasos (registro → cupo aprobado → pago con QR → plan de pago)
@@ -186,9 +187,9 @@ Los dígitos son columnas del 0 al 9 que se desplazan, así el número sube en v
 El tamaño sale de tres variables (`--dw`, `--dh`, `--df`) en `.clock`, para que en pantallas
 angostas los ocho quepan sin desbordar.
 
-> Ojo con la coherencia: al haber cuenta regresiva, la sección de descarga pasó a hablar de
-> pre-lanzamiento ("Pronto en App Store"). Si la app ya está publicada, hay que revertir esos
-> textos o quitar la cuenta regresiva.
+> Ojo con la coherencia: mientras haya cuenta regresiva, la acción es **crear cuenta**, no
+> descargar. La sección `#descarga` habla de reservar cupo y las tiendas dicen "Pronto en".
+> Cuando la app se publique hay que revertir esos textos y quitar la cuenta regresiva.
 
 ## Cuenta: login y registro
 
@@ -224,6 +225,23 @@ Formspree / Mailchimp.
 - El loader se quita solo por CSS a los 4,5 s aunque el JS falle
 - Breakpoints en 1150 / 1080 / 860 / 620 px. El menú hamburguesa entra a 1150: con
   seis secciones más sesión y CTA, el nav ya no cabe en una línea por debajo de eso
+
+### Escena 3D del hero
+
+Cada objeto flotante es un `.fo` con cuatro variables en su `style`:
+
+```html
+<div class="fo fo--card" style="--x:-3%;--y:64%;--z:-140px;--p:34px">
+```
+
+`--x`/`--y` son el **centro** del objeto dentro de la escena, `--z` su profundidad y `--p`
+cuánto se desplaza con el mouse. Los cercanos llevan `--p` alto y los del fondo bajo: esa
+diferencia es la que produce la sensación de volumen. El movimiento va en el contenedor y la
+flotación en `.fo__in`, separados para que no se pisen.
+
+Al mover objetos, ojo con dos cosas: `--x` fuera del rango −5%…105% se mete en la columna de
+texto o se sale por el borde, y por debajo de 620px sobreviven solo los que aportan
+(el resto se oculta para no saturar).
 
 ### Detalles a tener en cuenta si tocas el CSS
 

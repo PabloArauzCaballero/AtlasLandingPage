@@ -28,7 +28,8 @@ si no llega, no hay WebGL o el equipo pide menos movimiento, el hero se ve igual
 │   │   └── compare.css    ← portada y barra de conceptos (TEMPORAL)
 │   ├── js/
 │   │   ├── main.js        ← animaciones e interacciones (vanilla)
-│   │   ├── hero3d.js      ← globo WebGL del hero
+│   │   ├── mapa3d.js      ← mapa WebGL de Bolivia
+│   │   ├── geo-bolivia.js ← contorno del país y ciudades
 │   │   └── vendor/        ← Three.js (única dependencia, sin CDN)
 │   │   ├── auth.js        ← validación de login y registro
 │   │   └── preview.js     ← panel de previsualización (TEMPORAL)
@@ -75,7 +76,7 @@ pasos de la sección de abajo.
 ## Secciones
 
 1. **Loader** con contador 0→100 y cortina de salida
-2. **Hero** — escena 3D: el mockup de la app rodeado de objetos que flotan a distinta
+2. **Hero** — escena 3D en CSS: el mockup de la app rodeado de objetos que flotan a distinta
    profundidad real (tarjeta Atlas, moneda, sello de 0%, una compra al fondo). El mouse
    inclina la escena y desplaza cada objeto según su distancia
 3. **Ticker** de categorías de comercios
@@ -88,12 +89,13 @@ pasos de la sección de abajo.
 7. **Niveles** — camino con 4 nodos que se van encendiendo con el scroll
 8. **Comparativa** — tabla Atlas vs tarjeta de crédito vs prestamista informal
 9. **Categorías** — grilla de 12 rubros donde se puede comprar
-10. **Comercios** — propuesta B2B + mockup del panel de aliados
-11. **Opiniones** — dos carriles infinitos en direcciones opuestas
-12. **Descarga** — tiendas, QR, requisitos de apertura y mockup de compra aprobada
-13. **Cuenta regresiva** — reloj al lanzamiento con dígitos que ruedan,
+10. **Cobertura** — el mapa del país en WebGL con la red de comercios
+11. **Comercios** — propuesta B2B + mockup del panel de aliados
+12. **Opiniones** — dos carriles infinitos en direcciones opuestas
+13. **Descarga** — tiendas, QR, requisitos de apertura y mockup de compra aprobada
+14. **Cuenta regresiva** — reloj al lanzamiento con dígitos que ruedan,
     barra de avance de campaña y lista de espera
-14. **FAQ**, **CTA final** y **footer**
+15. **FAQ**, **CTA final** y **footer**
 
 Las secciones alternan fondo (`.section` / `.section band`). Si agregas o mueves una,
 respeta la alternancia para que no queden dos del mismo tono pegadas.
@@ -232,12 +234,17 @@ Formspree / Mailchimp.
 - Breakpoints en 1150 / 1080 / 860 / 620 px. El menú hamburguesa entra a 1150: con
   seis secciones más sesión y CTA, el nav ya no cabe en una línea por debajo de eso
 
-### Globo WebGL del hero
+### Mapa WebGL (sección Cobertura)
 
-`assets/js/hero3d.js` dibuja **la red** detrás del teléfono: los puntos son comercios, los
-nodos brillantes las plazas grandes y por los arcos viajan pulsos, que son las compras
+`assets/js/mapa3d.js` dibuja **la red sobre el mapa del país**: cada punto es un comercio,
+los nodos que laten son las ciudades y por los arcos viajan pulsos, que son las compras
 cruzando la red. Lee los colores de `--b1`…`--b4`, así que **cambia con la paleta** igual
 que el resto del sitio.
+
+El relleno no viene precalculado: se hace en el navegador con punto-en-polígono sobre el
+contorno de `assets/js/geo-bolivia.js`. **Para cambiar de país solo se cambia ese archivo**
+—contorno en `[lon, lat]` y lista de ciudades— y el renderizador no se toca. El contorno
+viene de world.geo.json (dominio público), ya simplificado a 60 puntos.
 
 Lo que lo separa de un efecto de plantilla está todo en los shaders:
 
@@ -253,11 +260,10 @@ Lo que lo separa de un efecto de plantilla está todo en los shaders:
   y lo tapa. Con un planeta de puntos transparentes ese brillo inunda la escena. Con
   `FrontSide` y el Fresnel invertido, el filo queda donde debe: en el limbo.
 
-Se apaga fuera de la vista y con la pestaña oculta, no corre por debajo de 760px de ancho y
-respeta `prefers-reduced-motion`. El scroll lo sigue girando mientras sale de cuadro.
+Se apaga fuera de la vista y con la pestaña oculta, y respeta `prefers-reduced-motion`.
 
-Para subir o bajar su protagonismo: `COUNT` (densidad), el `44.0 / dist` del tamaño de punto
-y, en el CSS, el `mask-image` de `.globe`, que es el que decide cuánto del globo se ve.
+Para subir o bajar su presencia: `STEP` (separación entre puntos, en grados), el
+`40.0 / dist` del tamaño de punto y, en el CSS, el `mask-image` de `.cover__map`.
 
 ### Escena 3D del hero (CSS)
 

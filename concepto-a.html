@@ -141,7 +141,6 @@
 <!-- ══════════ HERO ══════════ -->
 <section class="hero" id="hero">
   <div class="hero__mesh" aria-hidden="true"></div>
-  <div class="globe" id="globe" aria-hidden="true"></div>
 
   <div class="wrap hero__grid">
     <div class="hero__copy">
@@ -185,7 +184,7 @@
       <div class="scene__deep">
 
         <!-- Tarjeta Atlas, el objeto que manda la escena -->
-        <div class="fo fo--card" style="--x:-3%;--y:64%;--z:-140px;--p:34px">
+        <div class="fo fo--card" style="--x:13%;--y:66%;--z:-150px;--p:30px">
           <div class="fo__in" style="--dur:9s;--delay:0s">
             <div class="acard">
               <span class="acard__shine"></span>
@@ -208,7 +207,7 @@
         </div>
 
         <!-- Compra flotando, al fondo -->
-        <div class="fo fo--buy" style="--x:98%;--y:2%;--z:-250px;--p:20px">
+        <div class="fo fo--buy" style="--x:88%;--y:-2%;--z:-260px;--p:16px">
           <div class="fo__in" style="--dur:10s;--delay:1.1s">
             <div class="buy">
               <span class="buy__ico">
@@ -763,8 +762,35 @@
   </div>
 </section>
 
+<!-- ══════════ COBERTURA ══════════ -->
+<section class="section cover" id="cobertura">
+  <div class="wrap cover__grid">
+    <div data-anim="rise">
+      <span class="eyebrow">Cobertura</span>
+      <h2 class="h2 h2--left">Una red que llega<br>a todo el país</h2>
+      <p class="lead lead--left">
+        Comercios aliados en los nueve departamentos, conectados a la misma red.
+        Compres donde compres, el plan de pago es el mismo.
+      </p>
+
+      <ul class="cover__stats">
+        <li><b>9</b><span>Departamentos</span></li>
+        <li><b><em data-count="500" data-suffix="+"></em></b><span>Comercios aliados</span></li>
+        <li><b><em data-count="60" data-suffix="s"></em></b><span>Para aprobarte</span></li>
+      </ul>
+
+      <a href="registro.html" class="btn btn--primary btn--lg" data-magnetic>
+        <span>Crear mi cuenta</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="cover__map" id="mapa" aria-hidden="true"></div>
+  </div>
+</section>
+
 <!-- ══════════ COMERCIOS ══════════ -->
-<section class="section" id="comercios">
+<section class="section band" id="comercios">
   <div class="wrap duo">
     <div data-anim="rise">
       <span class="eyebrow">Para comercios</span>
@@ -816,7 +842,7 @@
 </section>
 
 <!-- ══════════ OPINIONES ══════════ -->
-<section class="section band" id="opiniones">
+<section class="section" id="opiniones">
   <div class="wrap">
     <header class="head" data-anim="rise">
       <span class="eyebrow">Historias</span>
@@ -849,7 +875,7 @@
 </section>
 
 <!-- ══════════ DESCARGA ══════════ -->
-<section class="section" id="descarga">
+<section class="section band" id="descarga">
   <div class="wrap duo duo--rev">
     <div data-anim="rise">
       <span class="eyebrow">Reserva tu cupo</span>
@@ -1131,7 +1157,8 @@
 </button>
 
 <script defer src="assets/js/vendor/three.min.js"></script>
-<script defer src="assets/js/hero3d.js"></script>
+<script defer src="assets/js/geo-bolivia.js"></script>
+<script defer src="assets/js/mapa3d.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -84,7 +84,9 @@ pasos de la sección de abajo.
 10. **Comercios** — propuesta B2B + mockup del panel de aliados
 11. **Opiniones** — dos carriles infinitos en direcciones opuestas
 12. **Descarga** — tiendas, QR, requisitos de apertura y mockup de compra aprobada
-13. **FAQ**, **CTA final** y **footer**
+13. **Cuenta regresiva** — reloj al lanzamiento con dígitos que ruedan,
+    barra de avance de campaña y lista de espera
+14. **FAQ**, **CTA final** y **footer**
 
 Las secciones alternan fondo (`.section` / `.section band`). Si agregas o mueves una,
 respeta la alternancia para que no queden dos del mismo tono pegadas.
@@ -158,8 +160,35 @@ Los textos son **placeholders realistas, no datos verificados**:
 | Panel de aliados | Cifras de demo |
 | Enlaces de tiendas | Los `href="#"` de App Store / Google Play |
 | QR | Generar el QR real al enlace de descarga |
+| Fechas del lanzamiento | `data-start` y `data-launch` de la sección `#lanzamiento` |
 | Logo | Elegir concepto y ruta en el panel, y luego quitar el panel |
 | Legales | Términos, privacidad y el detalle de cargos por mora del FAQ |
+
+## Cuenta regresiva al lanzamiento
+
+Las dos fechas viven en la propia sección, en `index.html`:
+
+```html
+<section class="launch" id="lanzamiento"
+         data-start="2026-08-01T00:00:00-04:00"    <!-- arranque de campaña -->
+         data-launch="2026-10-15T12:00:00-04:00">  <!-- lanzamiento -->
+```
+
+`data-launch` es el objetivo del reloj y `data-start` marca desde dónde cuenta la barra de
+avance. **Las dos son de ejemplo: hay que poner las reales.** Incluyen zona horaria (`-04:00`,
+Venezuela), así que la cuenta es la misma para todos, sin importar dónde esté el visitante.
+
+Cuando la fecha llega, el reloj se queda en cero y el titular cambia solo a "¡Atlas ya está
+aquí!". La lista de espera valida el correo pero **no envía nada**: está marcada con un `TODO`
+en `main.js`.
+
+Los dígitos son columnas del 0 al 9 que se desplazan, así el número sube en vez de parpadear.
+El tamaño sale de tres variables (`--dw`, `--dh`, `--df`) en `.clock`, para que en pantallas
+angostas los ocho quepan sin desbordar.
+
+> Ojo con la coherencia: al haber cuenta regresiva, la sección de descarga pasó a hablar de
+> pre-lanzamiento ("Pronto en App Store"). Si la app ya está publicada, hay que revertir esos
+> textos o quitar la cuenta regresiva.
 
 ## Cuenta: login y registro
 
@@ -193,7 +222,8 @@ Formspree / Mailchimp.
 - Respeta `prefers-reduced-motion`: apaga animaciones, canvas y cursor
 - Teclado: flechas dentro de los chips de nivel (`radiogroup`), foco visible en todo el sitio
 - El loader se quita solo por CSS a los 4,5 s aunque el JS falle
-- Breakpoints en 1080 / 860 / 620 px; menú hamburguesa desde 860
+- Breakpoints en 1150 / 1080 / 860 / 620 px. El menú hamburguesa entra a 1150: con
+  seis secciones más sesión y CTA, el nav ya no cabe en una línea por debajo de eso
 
 ### Detalles a tener en cuenta si tocas el CSS
 

@@ -179,7 +179,7 @@ table{border-collapse:collapse;width:100%}
 
 .brand{display:inline-flex;align-items:center;gap:.65rem;font-family:var(--display);
   font-weight:800;font-size:1.5rem;letter-spacing:-.035em}
-.brand svg{transition:transform .55s var(--e)}
+.brand svg{flex:none;transition:transform .55s var(--e)}
 .brand:hover svg{transform:rotate(-12deg) scale(1.1)}
 
 .nav__menu{position:relative;display:flex;align-items:center;gap:.35rem}
@@ -187,8 +187,8 @@ table{border-collapse:collapse;width:100%}
   background:rgba(255,255,255,.07);transform:translate(var(--x,0),-50%);width:var(--w,0);
   opacity:0;transition:transform .42s var(--e),width .42s var(--e),opacity .3s;pointer-events:none}
 .nav__menu:hover .nav__pill{opacity:1}
-.nav__link{position:relative;padding:.5rem .85rem;border-radius:99px;font-size:.92rem;
-  font-weight:600;color:var(--t2);transition:color .25s}
+.nav__link{position:relative;padding:.5rem .7rem;border-radius:99px;font-size:.9rem;
+  font-weight:600;color:var(--t2);white-space:nowrap;transition:color .25s}
 .nav__link:hover,.nav__link.on{color:var(--t1)}
 .nav__link.on::before{content:'';position:absolute;left:50%;bottom:2px;width:5px;height:5px;
   margin-left:-2.5px;border-radius:50%;background:var(--b3);box-shadow:0 0 10px var(--b3)}
@@ -983,8 +983,9 @@ table{border-collapse:collapse;width:100%}
     padding:1rem 0;background:linear-gradient(var(--bg) 72%,transparent);z-index:3}
   .device--tour{width:min(230px,62vw)}
   .tour__steps{margin-left:1.7rem}
-  .tour__step{padding:min(12vh,90px) 0}
-  .tour__step::before{top:min(12vh,90px);bottom:min(12vh,90px)}
+  /* El riel se queda continuo tambien aqui: recortarlo a la caja del texto
+     era justo lo que dejaba los huecos entre pasos vacios. */
+  .tour__step{padding:min(7vh,52px) 0}
 
   .calc,.duo{grid-template-columns:1fr}
   .duo--rev .duo__visual{order:0}
@@ -1002,10 +1003,10 @@ table{border-collapse:collapse;width:100%}
   .foot__grid{grid-template-columns:1fr 1fr}
   .foot__brand{grid-column:1/-1}
 }
-@media (max-width:860px){
+@media (max-width:1150px){
   .burger{display:flex}
   .nav__menu{position:fixed;inset:0 0 auto;padding:88px 1.5rem 2.2rem;flex-direction:column;
-    align-items:stretch;gap:.2rem;background:rgba(5,6,11,.97);backdrop-filter:blur(22px);
+    align-items:stretch;gap:.2rem;background:rgba(6,20,38,.97);backdrop-filter:blur(22px);
     border-bottom:1px solid var(--line);transform:translateY(-102%);
     transition:transform .55s var(--e);max-height:100dvh;overflow-y:auto}
   .nav__menu.open{transform:none}
@@ -1014,13 +1015,20 @@ table{border-collapse:collapse;width:100%}
   .nav__link.on::before{display:none}
   .nav__gap{display:none}
   .nav__cta{margin:1.1rem 0 0;justify-content:center;padding:.95rem}
+}
+@media (max-width:1080px){
   .cursor{display:none}
-  .presets{grid-template-columns:repeat(2,1fr)}
   .hero__ticker{padding:.9rem 0}
-  .cats{grid-template-columns:repeat(3,1fr)}
   .hero__chips{justify-content:center}
 }
+@media (max-width:860px){
+  /* Estos venian del punto del nav; al subirlo se quedan donde tocan */
+  .presets{grid-template-columns:repeat(2,1fr)}
+  .cats{grid-template-columns:repeat(3,1fr)}
+}
 @media (max-width:620px){
+  .hero__cta{flex-direction:column;align-items:stretch}
+  .hero__cta .btn{width:100%}
   .bento,.path{grid-template-columns:1fr}
   .cell--a,.cell--b,.cell--c,.cell--d,.cell--e,.cell--f{grid-column:span 1}
   .foot__grid{grid-template-columns:1fr}
@@ -1044,4 +1052,147 @@ table{border-collapse:collapse;width:100%}
   .wi{transform:none}
   .fx,.cursor,.noise{display:none}
   .scr{transition:none}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CUENTA REGRESIVA
+   Los digitos son columnas 0-9 que ruedan: el numero no parpadea, sube.
+   ═══════════════════════════════════════════════════════════════════════ */
+.launch{position:relative;z-index:2;overflow:hidden;isolation:isolate;
+  padding:clamp(60px,8vw,102px) 0;
+  background:
+    radial-gradient(120% 90% at 50% 0%,rgba(var(--b2-rgb),.22),transparent 62%),
+    radial-gradient(90% 70% at 50% 110%,rgba(var(--b1-rgb),.35),transparent 60%),
+    var(--navy)}
+.launch::before,.launch::after{content:'';position:absolute;inset-inline:0;height:1px;z-index:3;
+  background:linear-gradient(90deg,transparent,rgba(var(--b3-rgb),.55),transparent)}
+.launch::before{top:0}.launch::after{bottom:0}
+
+/* Halo que gira despacio detras del reloj */
+.launch__halo{position:absolute;top:50%;left:50%;width:min(140vw,1180px);aspect-ratio:1;
+  translate:-50% -50%;border-radius:50%;z-index:-1;opacity:.5;
+  background:conic-gradient(from 0deg,transparent,rgba(var(--b3-rgb),.5),transparent 32%,
+    transparent 55%,rgba(var(--b2-rgb),.45),transparent 82%);
+  filter:blur(52px);animation:halo 26s linear infinite}
+@keyframes halo{to{rotate:360deg}}
+
+.launch__grid{position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:58px 58px;
+  mask-image:radial-gradient(ellipse 75% 60% at 50% 50%,#000 15%,transparent 72%);
+  -webkit-mask-image:radial-gradient(ellipse 75% 60% at 50% 50%,#000 15%,transparent 72%)}
+
+.launch__stars{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.launch__stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--b4);
+  opacity:0;animation:twinkle 4.4s ease-in-out infinite}
+.launch__stars i:nth-child(1){top:14%;left:8%;animation-delay:0s}
+.launch__stars i:nth-child(2){top:28%;left:88%;animation-delay:.4s}
+.launch__stars i:nth-child(3){top:62%;left:5%;animation-delay:.8s}
+.launch__stars i:nth-child(4){top:78%;left:92%;animation-delay:1.2s}
+.launch__stars i:nth-child(5){top:9%;left:64%;animation-delay:1.6s}
+.launch__stars i:nth-child(6){top:86%;left:32%;animation-delay:2s}
+.launch__stars i:nth-child(7){top:44%;left:96%;animation-delay:2.4s}
+.launch__stars i:nth-child(8){top:20%;left:24%;animation-delay:2.8s}
+.launch__stars i:nth-child(9){top:70%;left:72%;animation-delay:3.2s}
+.launch__stars i:nth-child(10){top:52%;left:14%;animation-delay:3.6s}
+.launch__stars i:nth-child(11){top:34%;left:46%;animation-delay:1s}
+.launch__stars i:nth-child(12){top:92%;left:58%;animation-delay:2.2s}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.9;transform:scale(1)}}
+
+.launch__streak{position:absolute;width:200px;height:1px;z-index:-1;
+  background:linear-gradient(90deg,transparent,var(--b4),transparent);
+  opacity:0;animation:streak 9s ease-in-out infinite}
+.launch__streak--1{top:22%;left:-200px;rotate:14deg}
+.launch__streak--2{top:68%;left:-200px;rotate:-10deg;animation-delay:4.5s}
+@keyframes streak{0%,100%{opacity:0;translate:0 0}
+  6%{opacity:.85}20%{opacity:0;translate:120vw 0}}
+
+.launch__in{position:relative;text-align:center;display:flex;flex-direction:column;
+  align-items:center}
+.launch__tag{display:inline-flex;align-items:center;gap:.55rem;padding:.42rem 1rem;
+  border-radius:99px;font-size:.78rem;font-weight:700;letter-spacing:.02em;color:var(--t1);
+  background:rgba(var(--b3-rgb),.12);border:1px solid rgba(var(--b3-rgb),.4);margin-bottom:1.4rem}
+.launch__pulse{position:relative;width:7px;height:7px;border-radius:50%;background:var(--b3)}
+.launch__pulse::after{content:'';position:absolute;inset:-4px;border-radius:50%;
+  background:var(--b3);opacity:.4;animation:ping 1.9s var(--e) infinite}
+
+.launch__title{font-family:var(--display);font-weight:800;letter-spacing:-.045em;line-height:1.02;
+  font-size:clamp(2.2rem,5.4vw,4rem);margin-bottom:clamp(1.8rem,3.5vw,2.6rem)}
+.launch__title em{font-style:normal;background:var(--g);-webkit-background-clip:text;
+  background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ── El reloj ── */
+.clock{display:flex;align-items:flex-start;justify-content:center;gap:clamp(.3rem,1vw,.8rem);
+  margin-bottom:1.2rem}
+.clock__unit{display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.clock__box{display:flex;gap:.3rem}
+.clock__lbl{font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--t3)}
+.clock__sep{font-family:var(--display);font-weight:800;color:rgba(var(--b3-rgb),.5);
+  font-size:clamp(1.6rem,3.6vw,2.8rem);line-height:1.5;padding-top:.25em}
+.clock__sep--live{animation:blink 1s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.25}}
+
+/* Un solo par de variables manda ancho, alto y cuerpo del digito, para que
+   en pantallas angostas los 8 quepan sin desbordar. */
+.clock{--dw:clamp(46px,7.4vw,82px);--dh:clamp(66px,10.6vw,116px);--df:clamp(2.2rem,5.4vw,4rem)}
+.digit{position:relative;display:block;overflow:hidden;border-radius:16px;
+  width:var(--dw);height:var(--dh);
+  background:linear-gradient(170deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
+  border:1px solid rgba(var(--b3-rgb),.26);
+  box-shadow:0 18px 42px -20px rgba(0,0,0,.9),0 0 26px -14px rgba(var(--b3-rgb),.8)}
+.digit::after{content:'';position:absolute;inset-inline:0;top:50%;height:1px;z-index:2;
+  background:rgba(0,0,0,.4);pointer-events:none}
+.digit__roll{display:block;transition:transform .62s cubic-bezier(.22,1,.36,1);
+  will-change:transform}
+.digit__roll i{display:flex;align-items:center;justify-content:center;font-style:normal;
+  height:var(--dh);
+  font-family:var(--display);font-weight:800;letter-spacing:-.04em;
+  font-size:var(--df);
+  background:var(--g);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent}
+
+.clock__date{color:var(--t2);font-size:.95rem;margin-bottom:2rem}
+.clock__date b{color:var(--t1);font-weight:700}
+
+.launch__bar{width:min(100%,540px);margin-bottom:2rem}
+.launch__track{height:6px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.launch__track i{display:block;height:100%;width:0;border-radius:99px;background:var(--g);
+  box-shadow:0 0 16px rgba(var(--b3-rgb),.8);transition:width 1.4s var(--e2)}
+.launch__ends{display:flex;justify-content:space-between;margin-top:.55rem;
+  font-size:.76rem;font-weight:600;color:var(--t3)}
+
+.launch__form{display:flex;gap:.65rem;width:min(100%,520px);flex-wrap:wrap}
+.launch__form input{flex:1;min-width:220px;padding:1rem 1.35rem;border-radius:99px;
+  background:rgba(4,16,30,.7);border:1px solid rgba(var(--b3-rgb),.3);transition:.3s}
+.launch__form input::placeholder{color:var(--t3)}
+.launch__form input:focus{outline:none;border-color:var(--b3);background:rgba(4,16,30,.95)}
+.launch__msg{min-height:1.4rem;margin-top:.8rem;font-size:.9rem;font-weight:600;color:var(--b3)}
+.launch__msg.err{color:#FF8A8A}
+
+.launch__perks{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem 1.5rem;
+  font-size:.84rem;color:var(--t2)}
+.launch__perks li{display:flex;align-items:center;gap:.5rem}
+.launch__perks i{position:relative;width:17px;height:17px;border-radius:5px;flex:none;
+  background:rgba(var(--b3-rgb),.16);border:1px solid rgba(var(--b3-rgb),.36)}
+.launch__perks i::after{content:'';position:absolute;left:5px;top:2.5px;width:4px;height:7px;
+  border:solid var(--b3);border-width:0 2px 2px 0;rotate:45deg}
+
+@media (max-width:620px){
+  /* 8 digitos + separaciones tienen que caber en el ancho util */
+  .clock{--dw:clamp(34px,8.6vw,46px);--dh:clamp(48px,12vw,66px);--df:clamp(1.6rem,4.4vw,2.2rem);
+    gap:.35rem}
+  .clock__box{gap:.22rem}
+  .clock__sep{display:none}
+  .clock__lbl{font-size:.58rem;letter-spacing:.08em}
+  .digit{border-radius:11px}
+  .launch__form{flex-direction:column}
+  .launch__form input,.launch__form .btn{width:100%}
+  .launch__perks{flex-direction:column;align-items:flex-start;gap:.55rem;
+    width:fit-content;margin-inline:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  .launch__halo,.launch__streak,.launch__stars i,.clock__sep--live{animation:none}
+  .digit__roll{transition:none}
 }

@@ -448,7 +448,99 @@
   });
 
   /* ─────────────────────────────────────────────────────────────────
-     13 · Fondo: partículas conectadas
+     13 · Cuenta regresiva al lanzamiento
+     La fecha vive en el data-launch de la sección, en index.html.
+     ───────────────────────────────────────────────────────────────── */
+  (function countdown() {
+    const sec = $('#lanzamiento');
+    const clock = $('#clock');
+    if (!sec || !clock) return;
+
+    const target = new Date(sec.dataset.launch).getTime();
+    if (isNaN(target)) return;
+
+    // Cada dígito es una columna 0-9: rodamos a la posición en vez de reescribir
+    const rolls = {};
+    $$('.digit', clock).forEach((d) => { rolls[d.dataset.d] = $('.digit__roll', d); });
+    const H = () => $('.digit', clock).getBoundingClientRect().height;
+
+    // La barra va del arranque de campaña al lanzamiento. Si no hay
+    // data-start, usa una ventana de 90 días para no quedarse en cero.
+    const started = new Date(sec.dataset.start).getTime();
+    const start = isNaN(started) ? target - 90 * 864e5 : started;
+    const fill = $('#launchFill');
+    const pct = $('#launchPct');
+    const dateOut = $('#clockDate');
+
+    if (dateOut) {
+      const fmt = new Intl.DateTimeFormat('es-VE', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      dateOut.innerHTML = 'Lanzamiento el <b>' + fmt.format(new Date(target)) + '</b>';
+    }
+
+    function put(key, value) {
+      const s = String(Math.min(value, 99)).padStart(2, '0');
+      for (let i = 0; i < 2; i++) {
+        const roll = rolls[key + i];
+        if (roll) roll.style.transform = `translateY(-${Number(s[i]) * H()}px)`;
+      }
+    }
+
+    let done = false;
+    function tick() {
+      const left = target - Date.now();
+
+      if (left <= 0) {
+        if (!done) {
+          done = true;
+          ['d', 'h', 'm', 's'].forEach((k) => put(k, 0));
+          const t = $('.launch__title');
+          if (t) t.innerHTML = '<em>¡Atlas ya está aquí!</em>';
+          if (fill) fill.style.width = '100%';
+          if (pct) pct.textContent = '100%';
+        }
+        return;
+      }
+
+      const sTotal = Math.floor(left / 1000);
+      put('d', Math.floor(sTotal / 86400));
+      put('h', Math.floor(sTotal / 3600) % 24);
+      put('m', Math.floor(sTotal / 60) % 60);
+      put('s', sTotal % 60);
+
+      const p = clamp((Date.now() - start) / (target - start), 0, 1);
+      if (fill) fill.style.width = (p * 100).toFixed(1) + '%';
+      if (pct) pct.textContent = Math.round(p * 100) + '%';
+    }
+
+    tick();
+    setInterval(tick, 1000);
+    // Al cambiar el ancho cambia el alto del dígito, y con él el desplazamiento
+    addEventListener('resize', () => {
+      $$('.digit__roll', clock).forEach((r) => { r.style.transition = 'none'; });
+      tick();
+      requestAnimationFrame(() => {
+        $$('.digit__roll', clock).forEach((r) => { r.style.transition = ''; });
+      });
+    });
+
+    $('#waitForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = $('#waitEmail');
+      const msg = $('#waitMsg');
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
+      msg.classList.toggle('err', !ok);
+      msg.textContent = ok
+        ? '¡Anotado! Te escribimos el día del lanzamiento. 🚀'
+        : 'Escribe un correo válido para anotarte.';
+      // TODO: conectar con la lista de espera real
+      if (ok) e.target.reset(); else input.focus();
+    });
+  })();
+
+  /* ─────────────────────────────────────────────────────────────────
+     14 · Fondo: partículas conectadas
      ───────────────────────────────────────────────────────────────── */
   (function field() {
     const cv = $('#fx');
@@ -512,7 +604,7 @@
   })();
 
   /* ─────────────────────────────────────────────────────────────────
-     14 · Scroll suave con offset de navbar
+     15 · Scroll suave con offset de navbar
      ───────────────────────────────────────────────────────────────── */
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');

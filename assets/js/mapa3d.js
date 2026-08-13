@@ -80,7 +80,7 @@
   const cityXY = GEO.cities.map((c) => project(c.lon, c.lat));
 
   function density(x, y) {
-    let d = 0.16;                            // piso: el campo nunca queda vacío
+    let d = 0.21;                            // piso: el campo nunca queda vacío
     for (let i = 0; i < cityXY.length; i++) {
       const dx = x - cityXY[i][0], dy = y - cityXY[i][1];
       const r2 = dx * dx + dy * dy;
@@ -154,7 +154,7 @@
       varying vec3 vColor; varying float vFog; varying float vWave;
       void main(){
         float d = length(gl_PointCoord - 0.5);
-        float a = smoothstep(0.5, 0.12, d);      // disco suave, no cuadrado
+        float a = smoothstep(0.5, 0.18, d);      // caída suave: el corte duro aliasea
         if (a < 0.01) discard;
         gl_FragColor = vec4(vColor * (0.6 + 0.4 * vWave), a * vFog * vWave * 0.9);
       }`
@@ -162,40 +162,35 @@
   map.add(new THREE.Points(geo, fillMat));
 
   /* ═══════════ 2 · Frontera ═══════════
-     Sin el contorno marcado el país no se reconoce. */
-  const edge = [];
-  for (let i = 0; i < poly.length; i++) {
-    const [ax, ay] = poly[i];
-    const [bx, by] = poly[(i + 1) % poly.length];
-    const seg = Math.max(2, Math.round(Math.hypot(bx - ax, by - ay) / 0.055));
-    for (let s = 0; s < seg; s++) {
-      const k = s / seg;
-      edge.push(ax + (bx - ax) * k, ay + (by - ay) * k, 0.03);
-    }
-  }
-  const egeo = new THREE.BufferGeometry();
-  egeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(edge), 3));
-  map.add(new THREE.Points(egeo, new THREE.ShaderMaterial({
-    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-    uniforms: { uColor: { value: cLite.clone() } },
-    vertexShader: `
-      varying float vFog;
-      void main(){
-        vec4 mv = modelViewMatrix * vec4(position, 1.0);
-        ${FOG_V}
-        gl_PointSize = 2.6 * (46.0 / dist);
-        gl_Position = projectionMatrix * mv;
-      }`,
-    fragmentShader: `
-      uniform vec3 uColor;
-      varying float vFog;
-      void main(){
-        float d = length(gl_PointCoord - 0.5);
-        float a = smoothstep(0.5, 0.1, d);
-        if (a < 0.01) discard;
-        gl_FragColor = vec4(uColor, a * vFog * 0.75);
-      }`
-  })));
+     Antes era una fila de puntos y se veía dentada. Un tubo sobre una
+     curva centrípeta da una línea continua y suave, sin escalones. */
+  const border = new THREE.CatmullRomCurve3(
+    poly.map(([x, y]) => new THREE.Vector3(x, y, 0.04)),
+    true, 'centripetal', 0.5
+  );
+  map.add(new THREE.Mesh(
+    new THREE.TubeGeometry(border, Math.min(poly.length * 2, 900), 0.017, 5, true),
+    new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      uniforms: { uColor: { value: cLite.clone() } },
+      vertexShader: `
+        varying float vFog; varying float vRound;
+        void main(){
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          ${FOG_V}
+          vRound = uv.y;                 // posición alrededor del tubo
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: `
+        uniform vec3 uColor;
+        varying float vFog; varying float vRound;
+        void main(){
+          // Se apaga hacia los lados del tubo: se lee como trazo, no como caño
+          float soft = sin(vRound * 3.14159);
+          gl_FragColor = vec4(uColor, pow(soft, 1.6) * vFog * 0.95);
+        }`
+    })
+  ));
 
   /* ═══════════ 3 · Ciudades ═══════════ */
   const cityPts = GEO.cities.map((c) => {
@@ -300,7 +295,7 @@
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
     if (!w || !h) return;
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.position.z = w < 620 ? 18 : 15;

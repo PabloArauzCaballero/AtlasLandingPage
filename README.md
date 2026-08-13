@@ -251,8 +251,11 @@ que el resto del sitio.
 
 El relleno no viene precalculado: se hace en el navegador con punto-en-polígono sobre el
 contorno de `assets/js/geo-bolivia.js`. **Para cambiar de país solo se cambia ese archivo**
-—contorno en `[lon, lat]` y lista de ciudades— y el renderizador no se toca. El contorno
-viene de world.geo.json (dominio público), ya simplificado a 60 puntos.
+—contorno en `[lon, lat]` y lista de ciudades— y el renderizador no se toca.
+
+El contorno son **417 puntos** de Natural Earth 1:50m (dominio público). La resolución
+importa: con un contorno grueso los bordes salen angulosos y el mapa se ve pixelado. Si
+cambias de país, no uses una versión demasiado simplificada.
 
 Lo que lo separa de un efecto de plantilla está todo en los shaders:
 

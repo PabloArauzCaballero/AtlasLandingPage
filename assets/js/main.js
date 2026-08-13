@@ -191,6 +191,10 @@
      ───────────────────────────────────────────────────────────────── */
   const steps = $$('.tour__step');
   const screens = $$('.scr');
+  const dots = $$('.tour__dots i');
+  const tourNum = $('#tourNum');
+  const tourName = $('#tourName');
+  const NAMES = ['Registro', 'Tu cupo', 'Pago con QR', 'Plan de pago'];
   let currentScreen = 0;
 
   function setScreen(i) {
@@ -198,6 +202,9 @@
     currentScreen = i;
     screens.forEach((s, k) => s.classList.toggle('is-on', k === i));
     steps.forEach((s, k) => s.classList.toggle('on', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    if (tourNum) tourNum.textContent = i + 1;
+    if (tourName) tourName.textContent = NAMES[i] || '';
   }
 
   if (steps.length && 'IntersectionObserver' in window) {

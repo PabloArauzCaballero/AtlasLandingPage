@@ -349,6 +349,11 @@
             </div>
           </div>
         </div>
+
+        <p class="tour__now">
+          Paso <em id="tourNum">1</em> de 4 · <em id="tourName">Registro</em>
+          <span class="tour__dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span>
+        </p>
       </div>
 
       <!-- Columna que scrollea: los pasos -->
@@ -848,6 +853,15 @@
               <p class="win__title">¡Compra aprobada!</p>
               <p class="win__mut">Tu plan de 3 cuotas ya está activo</p>
               <p class="win__amount">$240,00</p>
+
+              <ul class="ui__plan win__plan">
+                <li class="paid"><i></i><b>Inicial</b><em>$96,00</em><u>Pagado</u></li>
+                <li><i></i><b>Cuota 1</b><em>$48,00</em><u>15 días</u></li>
+                <li><i></i><b>Cuota 2</b><em>$48,00</em><u>30 días</u></li>
+                <li><i></i><b>Cuota 3</b><em>$48,00</em><u>45 días</u></li>
+              </ul>
+              <span class="ui__btn win__btn">Ver mi plan</span>
+
               <div class="pop"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
             </div>
           </div>
@@ -859,10 +873,16 @@
 
 <!-- ══════════ FAQ ══════════ -->
 <section class="section band" id="faq">
-  <div class="wrap wrap--tight">
-    <header class="head" data-anim="rise">
+  <div class="wrap faq-grid">
+    <header class="faq-intro" data-anim="rise">
       <span class="eyebrow">Preguntas frecuentes</span>
-      <h2 class="h2">Todo lo que<br>quieres saber</h2>
+      <h2 class="h2 h2--left">Todo lo que<br>quieres saber</h2>
+      <p class="lead lead--left">Y si te queda alguna duda, escríbenos. Del otro lado
+         contestan personas, no un robot.</p>
+      <a href="#contacto" class="btn btn--line">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>
+        <span>Hablar con soporte</span>
+      </a>
     </header>
 
     <div class="faq" data-anim="rise">

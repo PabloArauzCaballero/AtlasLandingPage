@@ -71,10 +71,34 @@ def build_one(src: str, slug: str, letter: str, name: str) -> str:
     h = h.replace('<title>Atlas — Compra ahora, paga después | Crédito instantáneo</title>',
                   f'<title>Atlas · Concepto {letter} — {name}</title>')
 
-    # 3 · Barra para saltar entre los tres
+    # 3 · Que login y registro hereden el concepto de la página de origen
+    if slug != "a":
+        h = h.replace('href="login.html"', f'href="login.html?c={slug}"')
+        h = h.replace('href="registro.html"', f'href="registro.html?c={slug}"')
+
+    # 4 · Barra para saltar entre los tres
     h = h.replace('</main>', '</main>\n\n' + chrome(letter), 1)
 
     return h
+
+
+def sync_defs(src: str) -> None:
+    """
+    login.html y registro.html se editan a mano, pero los símbolos tienen que
+    ser los mismos que los del sitio. Aquí se les copia el bloque de <defs>
+    para que no se desincronicen si se retoca una marca.
+    """
+    defs = re.search(r'<svg width="0" height="0".*?</defs></svg>', src, re.S).group(0)
+    for name in ("login.html", "registro.html"):
+        path = ROOT / name
+        if not path.exists():
+            continue
+        page = path.read_text(encoding="utf-8")
+        new = re.sub(r'<svg width="0" height="0".*?</defs></svg>', lambda _: defs,
+                     page, count=1, flags=re.S)
+        if new != page:
+            path.write_text(new, encoding="utf-8")
+            print(f"  {name}          ·  símbolos actualizados")
 
 
 SOUL = {
@@ -193,6 +217,8 @@ def main() -> int:
 
     (ROOT / "comparar.html").write_text(build_compare(src), encoding="utf-8")
     print("  comparar.html         ·  portada con los tres")
+
+    sync_defs(src)
 
     print("\nListo. Abre comparar.html para presentar los tres.")
     return 0

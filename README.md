@@ -9,6 +9,8 @@ Landing page estática para **Atlas**, plataforma de microcréditos / "compra ah
 ```
 .
 ├── index.html             ← versión de trabajo (con panel de previsualización)
+├── login.html             ← iniciar sesión
+├── registro.html          ← crear cuenta
 ├── comparar.html          ← portada para presentarle los 3 al cliente
 ├── concepto-a.html        ← la landing completa con el concepto A
 ├── concepto-b.html        ← …con el B
@@ -17,10 +19,12 @@ Landing page estática para **Atlas**, plataforma de microcréditos / "compra ah
 ├── assets/
 │   ├── css/
 │   │   ├── style.css      ← design tokens + todos los estilos
+│   │   ├── auth.css       ← login y registro
 │   │   ├── preview.css    ← panel de previsualización (TEMPORAL)
 │   │   └── compare.css    ← portada y barra de conceptos (TEMPORAL)
 │   ├── js/
 │   │   ├── main.js        ← animaciones e interacciones (vanilla)
+│   │   ├── auth.js        ← validación de login y registro
 │   │   └── preview.js     ← panel de previsualización (TEMPORAL)
 │   └── img/
 │       ├── logo-a.svg     ← concepto A · monograma
@@ -53,6 +57,10 @@ python3 build.py
 Toma `index.html` como fuente, le quita el panel de previsualización, fija el concepto y
 escribe `concepto-a/b/c.html` + `comparar.html`. **Cada vez que cambies contenido en
 `index.html` hay que volver a correrlo**, o las versiones del cliente se quedan viejas.
+
+También copia el bloque de símbolos a `login.html` y `registro.html` para que no se
+desincronicen, y hace que los enlaces de cuenta arrastren el concepto (`login.html?c=b`),
+para que el logo no cambie a mitad de la demo.
 
 Cuando el cliente elija, se borran `comparar.html`, `concepto-*.html`, `build.py` y
 `assets/css/compare.css`; y de `index.html` se aplica el concepto elegido siguiendo los
@@ -153,7 +161,24 @@ Los textos son **placeholders realistas, no datos verificados**:
 | Logo | Elegir concepto y ruta en el panel, y luego quitar el panel |
 | Legales | Términos, privacidad y el detalle de cargos por mora del FAQ |
 
-## Formulario
+## Cuenta: login y registro
+
+`login.html` y `registro.html` son pantallas completas con el mismo sistema de diseño.
+Validan en el cliente y muestran el resultado, **pero no envían nada todavía**.
+
+- **Login**: correo o teléfono + contraseña, ver/ocultar clave, mantener sesión,
+  recuperar clave y una vía alterna por código SMS.
+- **Registro**: nombre, cédula (con prefijo V-), teléfono (+58), correo y contraseña
+  con medidor de fuerza, más la aceptación de términos. Arriba, el indicador de los
+  3 pasos del alta.
+
+La validación vive en `assets/js/auth.js`, en el objeto `RULES` — ahí se ajusta el formato
+de cédula, la longitud del teléfono o el mínimo de la contraseña. El envío está marcado con
+un `TODO`: es el único punto donde hay que enchufar la API de Atlas.
+
+Las dos páginas llevan `noindex`: no tiene sentido que Google indexe un login.
+
+## Formulario de la landing
 
 `#leadForm` valida el correo en el cliente y muestra un mensaje, **pero no envía nada**.
 Conectar en `main.js` (bloque 12, marcado con `TODO`) al backend, CRM o un servicio tipo

@@ -30,8 +30,12 @@
   <linearGradient id="gRoyal" x1="0%" y1="0%" x2="100%" y2="100%">
     <stop offset="0%" stop-color="var(--navy)"/><stop offset="46%" stop-color="var(--b1)"/><stop offset="100%" stop-color="var(--b3)"/>
   </linearGradient>
-  <linearGradient id="gFacet" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="var(--b2)"/><stop offset="100%" stop-color="var(--b4)"/>
+  <!-- La faceta arranca transparente: cortada en seco dejaba una costura
+       vertical que a tamaño pequeño se leía como una grieta en la letra. -->
+  <linearGradient id="gFacet" x1="0%" y1="0%" x2="100%" y2="65%">
+    <stop offset="0%" stop-color="var(--b2)" stop-opacity="0"/>
+    <stop offset="38%" stop-color="var(--b2)" stop-opacity=".72"/>
+    <stop offset="100%" stop-color="var(--b4)" stop-opacity=".92"/>
   </linearGradient>
   <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="#fff" stop-opacity=".42"/><stop offset="58%" stop-color="#fff" stop-opacity="0"/>
@@ -52,15 +56,14 @@
   </linearGradient>
   <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
 
-  <clipPath id="clipA"><path d="M60 15 L101 107 L82 107 L74.5 88 L45.5 88 L38 107 L19 107 Z M60 47 L52 67 L68 67 Z"/></clipPath>
+  <clipPath id="clipA"><path d="M60 14 L102 108 L82.5 108 L74.5 89 L45.5 89 L37.5 108 L18 108 Z M60 45 L50.5 70 L69.5 70 Z" clip-rule="evenodd"/></clipPath>
   <clipPath id="clipWing"><path d="M24 100 C30 64 56 36 102 18 C86 34 70 56 62 100 Z"/></clipPath>
 
   <!-- A · Monograma facetado -->
   <g id="markA">
-    <path fill="url(#gRoyal)" fill-rule="evenodd" d="M60 15 L101 107 L82 107 L74.5 88 L45.5 88 L38 107 L19 107 Z M60 47 L52 67 L68 67 Z"/>
-    <g clip-path="url(#clipA)"><rect x="60" y="0" width="60" height="120" fill="url(#gFacet)" opacity=".9"/></g>
-    <path d="M60 15 L60 47 M60 67 L60 88" stroke="#07253f" stroke-opacity=".28" stroke-width="2.4"/>
-    <rect x="0" y="0" width="120" height="66" fill="url(#gloss)" clip-path="url(#clipA)"/>
+    <path fill="url(#gRoyal)" fill-rule="evenodd" d="M60 14 L102 108 L82.5 108 L74.5 89 L45.5 89 L37.5 108 L18 108 Z M60 45 L50.5 70 L69.5 70 Z"/>
+    <g clip-path="url(#clipA)"><rect x="58" y="0" width="62" height="120" fill="url(#gFacet)"/></g>
+    <rect x="0" y="0" width="120" height="64" fill="url(#gloss)" clip-path="url(#clipA)"/>
   </g>
 
   <!-- B · Orbe con órbita -->

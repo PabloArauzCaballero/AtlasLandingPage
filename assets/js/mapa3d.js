@@ -293,33 +293,6 @@
     arcs.push(mat);
   });
 
-  /* ═══════════ 5 · Etiquetas ═══════════
-     Son HTML, no textura: se leen nítidas en cualquier pantalla y las
-     posiciona el mismo 3D, proyectando su punto a coordenadas de pantalla. */
-  const labelLayer = document.createElement('div');
-  labelLayer.className = 'mapa__labels';
-  host.appendChild(labelLayer);
-
-  const labels = [];
-  GEO.cities.forEach((c, i) => {
-    if (!c.big) return;                       // solo las tres grandes, o satura
-    const el = document.createElement('span');
-    el.className = 'mapa__tag';
-    el.textContent = c.name;
-    labelLayer.appendChild(el);
-    labels.push({ el, v: cityPts[i].v });
-  });
-
-  const ndc = new THREE.Vector3();
-  function placeLabels() {
-    const w = host.clientWidth, h = host.clientHeight;
-    for (const l of labels) {
-      ndc.copy(l.v).applyMatrix4(map.matrixWorld).project(camera);
-      l.el.style.transform =
-        `translate(-50%,-50%) translate(${(ndc.x * 0.5 + 0.5) * w}px, ${(-ndc.y * 0.5 + 0.5) * h}px)`;
-    }
-  }
-
   /* ── Montaje ── */
   renderer.setClearColor(0x000000, 0);
   host.appendChild(renderer.domElement);
@@ -356,9 +329,6 @@
 
     map.rotation.y = mx * 0.26;
     map.rotation.x = -0.38 + my * 0.14;
-
-    map.updateMatrixWorld();
-    placeLabels();
 
     fillMat.uniforms.uTime.value = t;
     cityMat.uniforms.uTime.value = t;

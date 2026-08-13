@@ -3,8 +3,12 @@
 Landing page estática para **Atlas**, plataforma de microcréditos / "compra ahora, paga después"
 (modelo tipo Cashea: inicial + 3 cuotas quincenales, 0% intereses, niveles de usuario).
 
-**Sin build, sin dependencias, sin frameworks.** Se abre con doble clic y funciona offline
-(lo único que sale a la red son las fuentes de Google, con fallback al sistema).
+**Sin build ni frameworks.** Se abre con doble clic y funciona offline (lo único que sale a
+la red son las fuentes de Google, con fallback al sistema).
+
+La única dependencia es **Three.js**, y está vendorizada en `assets/js/vendor/` — no se
+llama a ningún CDN. Se carga con `defer` y sirve solo para el globo decorativo del hero:
+si no llega, no hay WebGL o el equipo pide menos movimiento, el hero se ve igual sin él.
 
 ```
 .
@@ -24,6 +28,8 @@ Landing page estática para **Atlas**, plataforma de microcréditos / "compra ah
 │   │   └── compare.css    ← portada y barra de conceptos (TEMPORAL)
 │   ├── js/
 │   │   ├── main.js        ← animaciones e interacciones (vanilla)
+│   │   ├── hero3d.js      ← globo WebGL del hero
+│   │   └── vendor/        ← Three.js (única dependencia, sin CDN)
 │   │   ├── auth.js        ← validación de login y registro
 │   │   └── preview.js     ← panel de previsualización (TEMPORAL)
 │   └── img/
@@ -226,7 +232,26 @@ Formspree / Mailchimp.
 - Breakpoints en 1150 / 1080 / 860 / 620 px. El menú hamburguesa entra a 1150: con
   seis secciones más sesión y CTA, el nav ya no cabe en una línea por debajo de eso
 
-### Escena 3D del hero
+### Globo WebGL del hero
+
+`assets/js/hero3d.js` dibuja un globo de puntos detrás del teléfono. Lee los colores de
+`--b1/--b2/--b3`, así que **cambia con la paleta** igual que el resto del sitio.
+
+Lo que lo separa de un efecto de plantilla está todo en los shaders:
+
+- Los puntos de la cara oculta se apagan en vez de dibujarse igual: así se percibe un cuerpo
+  sólido y no una nube hueca.
+- Cada punto es un disco con borde suave; un cuadrado duro se ve barato.
+- Color y tamaño pierden fuerza con la distancia, que es lo que da aire entre frente y fondo.
+- La atmósfera usa Fresnel **con `FrontSide`**. Ojo aquí: el truco clásico que se ve en todos
+  los tutoriales usa `BackSide`, que ilumina el centro y solo funciona si el planeta es opaco
+  y lo tapa. Con un planeta de puntos transparentes ese brillo inunda la escena. Con
+  `FrontSide` y el Fresnel invertido, el filo queda donde debe: en el limbo.
+
+Se apaga fuera de la vista y con la pestaña oculta, no corre por debajo de 760px de ancho y
+respeta `prefers-reduced-motion`.
+
+### Escena 3D del hero (CSS)
 
 Cada objeto flotante es un `.fo` con cuatro variables en su `style`:
 

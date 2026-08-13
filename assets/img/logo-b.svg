@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Atlas">
+  <defs>
+    <radialGradient id="b-sphere" cx="37%" cy="30%" r="84%">
+      <stop offset="0%" stop-color="#D6FFF4"/><stop offset="16%" stop-color="#5CF0CC"/>
+      <stop offset="42%" stop-color="#14A894"/><stop offset="70%" stop-color="#0E7377"/>
+      <stop offset="100%" stop-color="#0C2C50"/>
+    </radialGradient>
+    <linearGradient id="b-ring" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5CF0CC"/><stop offset="100%" stop-color="#BFF7EC"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-18 60 60)"><path d="M14 60 A46 15 0 0 1 106 60" fill="none" stroke="#BFEEE6" stroke-opacity=".2" stroke-width="2.4" stroke-linecap="round"/></g>
+  <circle cx="60" cy="60" r="38" fill="url(#b-sphere)"/>
+  <ellipse cx="47" cy="43" rx="12" ry="7.5" fill="#F2FFFB" opacity=".4" transform="rotate(-30 47 43)"/>
+  <path d="M31 82 A38 38 0 0 0 90 79" fill="none" stroke="#A9F4E2" stroke-opacity=".45" stroke-width="2.4" stroke-linecap="round"/>
+  <g transform="rotate(-18 60 60)">
+    <path d="M14 60 A46 15 0 0 0 106 60" fill="none" stroke="url(#b-ring)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="106" cy="60" r="3.4" fill="#fff"/>
+  </g>
+</svg>

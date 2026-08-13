@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Atlas">
+  <defs>
+    <linearGradient id="a-royal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0C2C50"/><stop offset="46%" stop-color="#0E7377"/><stop offset="100%" stop-color="#2BE0A8"/>
+    </linearGradient>
+    <linearGradient id="a-facet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14A894"/><stop offset="100%" stop-color="#5CF0CC"/>
+    </linearGradient>
+    <linearGradient id="a-gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity=".42"/><stop offset="58%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="a-clip"><path d="M60 15 L101 107 L82 107 L74.5 88 L45.5 88 L38 107 L19 107 Z M60 47 L52 67 L68 67 Z"/></clipPath>
+  </defs>
+  <path fill="url(#a-royal)" fill-rule="evenodd" d="M60 15 L101 107 L82 107 L74.5 88 L45.5 88 L38 107 L19 107 Z M60 47 L52 67 L68 67 Z"/>
+  <g clip-path="url(#a-clip)"><rect x="60" y="0" width="60" height="120" fill="url(#a-facet)" opacity=".9"/></g>
+  <path d="M60 15 L60 47 M60 67 L60 88" stroke="#07253f" stroke-opacity=".28" stroke-width="2.4"/>
+  <rect x="0" y="0" width="120" height="66" fill="url(#a-gloss)" clip-path="url(#a-clip)"/>
+</svg>

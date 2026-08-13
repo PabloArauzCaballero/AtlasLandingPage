@@ -10,10 +10,16 @@ Landing page estática para **Atlas**, plataforma de microcréditos / "compra ah
 .
 ├── index.html
 ├── assets/
-│   ├── css/style.css      ← design tokens + todos los estilos
-│   ├── js/main.js         ← animaciones e interacciones (vanilla)
+│   ├── css/
+│   │   ├── style.css      ← design tokens + todos los estilos
+│   │   └── preview.css    ← panel de previsualización (TEMPORAL)
+│   ├── js/
+│   │   ├── main.js        ← animaciones e interacciones (vanilla)
+│   │   └── preview.js     ← panel de previsualización (TEMPORAL)
 │   └── img/
-│       ├── logo.svg              ← PLACEHOLDER (reemplazar)
+│       ├── logo-a.svg     ← concepto A · monograma
+│       ├── logo-b.svg     ← concepto B · orbe
+│       ├── logo-c.svg     ← concepto C · ascenso
 │       └── qr-placeholder.svg    ← PLACEHOLDER (reemplazar por el QR real)
 └── README.md
 ```
@@ -48,30 +54,57 @@ python3 -m http.server 8788
 Las secciones alternan fondo (`.section` / `.section band`). Si agregas o mueves una,
 respeta la alternancia para que no queden dos del mismo tono pegadas.
 
-## Re-branding (cuando llegue el manual de marca)
+## Panel de previsualización (TEMPORAL)
 
-### 1. Colores
-Todo el sitio se pinta desde tres variables al inicio de `assets/css/style.css`:
+Abajo a la izquierda hay un panel plegado, **Previsualizar marca**. Al abrirlo permite
+cambiar en vivo:
+
+- **Concepto de logo**: A · monograma, B · orbe, C · ascenso
+- **Ruta de degradado**: Azul→Teal (la recomendada), Teal→Menta, Índigo→Periwinkle,
+  Medianoche→Oro
+
+Cambia el símbolo en toda la página (nav, footer, loader, QR, tabla, notificaciones y favicon)
+y repinta la paleta completa. La elección se guarda en `localStorage` de ese navegador.
+
+**Este panel no va a producción.** Para quitarlo cuando esté decidido el concepto:
+
+1. Borra `assets/css/preview.css` y `assets/js/preview.js`
+2. En `index.html`, borra el `<link>` y el `<script>` de preview, y el bloque `<aside id="preview">`
+3. Si eligieron una ruta distinta de Azul→Teal, copia sus valores al `:root` de `style.css`
+4. Borra de `index.html` los `<g id="mark…">` de los conceptos que no se usen, y sus
+   `assets/img/logo-*.svg`
+
+## Marca
+
+### Colores
+La paleta es la ruta **Azul → Teal** del manual, en el `:root` de `assets/css/style.css`:
 
 ```css
-:root{
-  --b1:#8B5CF6;   /* violeta */
-  --b2:#4F7BFF;   /* azul    */
-  --b3:#2DE3B0;   /* menta   */
-}
+--navy:#0C2C50;   /* azul profundo: arranque del degradado y superficies */
+--b1:#0E7377;     /* teal profundo */
+--b2:#14A894;     /* teal medio    */
+--b3:#2BE0A8;     /* menta         */
+--b4:#5CF0CC;     /* menta clara   */
+--tint:#7FEFD6;   /* acento de texto e iconos sobre oscuro */
 ```
 
-Cambiar esas tres líneas re-brandea botones, gradientes, iconos, anillos, badges, la aurora y el
-fondo de partículas. Si la marca es clara en vez de oscura, hay que tocar también `--bg`, `--bg-2`
-y los `--t1/--t2/--t3`.
+Hay dos degradados: `--g` (teal → menta) es el que se usa donde tiene que **leerse** sobre fondo
+oscuro —botones, texto en degradado, iconos—, y `--g-deep` es el del manual completo
+(azul → teal → menta) para planos grandes, como el bloque de cierre.
 
-### 2. Logo
-Reemplazar `assets/img/logo.svg` conservando el nombre (se usa en nav, footer, loader, QR,
-tabla comparativa, notificaciones y favicon). Ideal: SVG cuadrado con viewBox ~48×48.
-Si el logo ya trae el texto "Atlas", quitar los `<span>Atlas</span>` del `.brand` en el nav y el footer.
+Los `--b*-rgb` son los mismos colores en RGB, para poder darles alpha en sombras y fondos.
 
-### 3. Tipografía
-Línea `<link>` de Google Fonts en el `<head>` + `--display` / `--body` en el CSS.
+### Logo
+Los tres conceptos viven como `<g id="markA|markB|markC">` dentro de `index.html`, y cada
+aparición del logo es un `<use href="#markA">`. Los stops de sus degradados usan las variables
+de marca, así que el símbolo se repinta solo al cambiar la paleta.
+
+Los `assets/img/logo-*.svg` son los mismos símbolos como archivos sueltos, con los colores fijos:
+se usan para el favicon y sirven para pasarlos a diseño o a la app.
+
+### Tipografía
+Sora (display) + Manrope (texto), como en el manual. Se cargan por Google Fonts en el `<head>`
+y se declaran en `--display` / `--body`.
 
 ## Contenido que hay que reemplazar antes de publicar
 
@@ -90,6 +123,7 @@ Los textos son **placeholders realistas, no datos verificados**:
 | Panel de aliados | Cifras de demo |
 | Enlaces de tiendas | Los `href="#"` de App Store / Google Play |
 | QR | Generar el QR real al enlace de descarga |
+| Logo | Elegir concepto y ruta en el panel, y luego quitar el panel |
 | Legales | Términos, privacidad y el detalle de cargos por mora del FAQ |
 
 ## Formulario
@@ -112,5 +146,10 @@ Formspree / Mailchimp.
 ### Detalles a tener en cuenta si tocas el CSS
 
 - El gradiente del titular va en `.hero__title em .wi`, no en el `<em>`: un hijo con `transform`
-  rompe `background-clip:text`.
+  rompe `background-clip:text`. Y ese `.wi` lleva `padding-bottom`: la caja del degradado
+  termina en la línea base, así que sin ese alto extra la bajante de la "p" se ve cortada.
+- Las máscaras `.w` del titular necesitan más alto que la caja de línea o recortan las bajantes.
+- Un `var()` dentro de una custom property se resuelve **donde se declara**. Por eso las rutas
+  de `preview.css` tienen que volver a declarar `--g` en `body`: el de `:root` se quedaría
+  con los colores por defecto.
 - `.cell p` gana por especificidad dentro del bento, por eso `.cell .cell__stat` va con doble clase.

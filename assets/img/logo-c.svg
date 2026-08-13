@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Atlas">
+  <defs>
+    <linearGradient id="c-wing" x1="10%" y1="100%" x2="90%" y2="0%">
+      <stop offset="0%" stop-color="#0C2C50"/><stop offset="55%" stop-color="#0E7377"/><stop offset="100%" stop-color="#2BE0A8"/>
+    </linearGradient>
+    <linearGradient id="c-wing2" x1="10%" y1="100%" x2="90%" y2="0%">
+      <stop offset="0%" stop-color="#14A894"/><stop offset="100%" stop-color="#78FFD8"/>
+    </linearGradient>
+    <linearGradient id="c-gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity=".42"/><stop offset="58%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="c-clip"><path d="M24 100 C30 64 56 36 102 18 C86 34 70 56 62 100 Z"/></clipPath>
+  </defs>
+  <path fill="url(#c-wing)" d="M24 100 C30 64 56 36 102 18 C86 34 70 56 62 100 Z"/>
+  <path fill="url(#c-wing2)" opacity=".92" d="M40 100 C44 76 58 56 84 42 C72 58 63 78 61 100 Z"/>
+  <rect x="0" y="0" width="120" height="72" fill="url(#c-gloss)" clip-path="url(#c-clip)"/>
+  <circle cx="100" cy="19" r="3.4" fill="#D8FFF2"/>
+</svg>

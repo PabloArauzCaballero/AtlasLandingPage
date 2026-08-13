@@ -1,0 +1,102 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ATLAS · Panel de previsualización  — TEMPORAL
+   ─────────────────────────────────────────────────────────────────────
+   Sirve para ver el sitio con cada concepto de logo y cada ruta de
+   degradado antes de decidir. NO va a producción.
+
+   Para quitarlo cuando esté elegido el concepto:
+     1. borra este archivo y assets/js/preview.js
+     2. borra en index.html los 2 <link>/<script> de preview y el
+        bloque <aside id="preview">
+     3. deja en style.css la ruta elegida y borra los <g id="mark…">
+        que no uses
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Rutas de degradado del manual ────────────────────────────────── */
+
+/* Los degradados hay que volver a declararlos en body: un var() dentro de
+   una custom property se resuelve donde se DECLARA, así que los de :root
+   se quedarían con los colores por defecto aunque la ruta cambie --b2/--b3. */
+body[data-route]{
+  --g:linear-gradient(135deg,var(--b2),var(--b3) 55%,var(--b4));
+  --g-deep:linear-gradient(145deg,var(--navy),var(--b1) 55%,var(--b3));
+  --g-soft:linear-gradient(150deg,rgba(var(--b2-rgb),.16),rgba(var(--b3-rgb),.09));
+  --sh-b:0 24px 64px -20px rgba(var(--b2-rgb),.5);
+}
+body[data-route="teal"]{        /* Teal → Menta */
+  --navy:#07323C; --b1:#0B5563; --b2:#1C9C8A; --b3:#37E0B0; --b4:#6BF0CC;
+  --tint:#86F2D6; --on-brand:#04222A;
+  --navy-rgb:7,50,60; --b1-rgb:11,85,99; --b2-rgb:28,156,138; --b3-rgb:55,224,176;
+  --bg:#04141A; --bg-2:#082430;
+}
+body[data-route="indigo"]{      /* Índigo → Periwinkle */
+  --navy:#1B2350; --b1:#3A45A0; --b2:#5A67C9; --b3:#7B86E6; --b4:#A7AEF2;
+  --tint:#BCC2FA; --on-brand:#0D1130;
+  --navy-rgb:27,35,80; --b1-rgb:58,69,160; --b2-rgb:90,103,201; --b3-rgb:123,134,230;
+  --bg:#080A1C; --bg-2:#0E1130;
+}
+body[data-route="gold"]{        /* Medianoche → Oro */
+  --navy:#16203A; --b1:#7A6634; --b2:#C0A34F; --b3:#E6C15E; --b4:#F3DA94;
+  --tint:#F0D89A; --on-brand:#1A1405;
+  --navy-rgb:22,32,58; --b1-rgb:122,102,52; --b2-rgb:192,163,79; --b3-rgb:230,193,94;
+  --bg:#0A0E1A; --bg-2:#111726;
+}
+
+/* ── Panel ────────────────────────────────────────────────────────── */
+.pv{
+  position:fixed;left:18px;bottom:18px;z-index:9500;width:250px;
+  font-family:var(--body);color:var(--t1);
+  border-radius:20px;overflow:hidden;
+  background:rgba(6,20,38,.9);backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid var(--line-2);box-shadow:0 26px 64px -22px rgba(0,0,0,.85);
+  transition:transform .5s var(--e),opacity .4s}
+.pv__head{display:flex;align-items:center;gap:.55rem;padding:.8rem 1rem;
+  border-bottom:1px solid var(--line);cursor:pointer;width:100%;text-align:left}
+.pv__dot{width:7px;height:7px;border-radius:50%;background:var(--b3);flex:none;
+  box-shadow:0 0 10px var(--b3)}
+.pv__head b{font-family:var(--display);font-size:.82rem;font-weight:700;flex:1}
+.pv__head svg{width:15px;height:15px;color:var(--t3);transition:rotate .4s var(--e)}
+.pv.min .pv__head svg{rotate:180deg}
+.pv__body{padding:.9rem 1rem 1rem;display:grid;gap:1rem;
+  max-height:70vh;overflow-y:auto;transition:.45s var(--e)}
+.pv.min .pv__body{max-height:0;padding-block:0;opacity:0;overflow:hidden}
+
+.pv__label{font-size:.62rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:.5rem}
+
+/* Conceptos */
+.pv__marks{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem}
+.pv__mark{display:grid;justify-items:center;gap:.35rem;padding:.6rem .3rem;border-radius:13px;
+  border:1px solid var(--line);background:var(--ink);cursor:pointer;
+  transition:.3s var(--e)}
+.pv__mark svg{width:32px;height:32px}
+.pv__mark span{font-size:.62rem;font-weight:700;color:var(--t3);letter-spacing:.04em}
+.pv__mark:hover{border-color:rgba(var(--b2-rgb),.55);background:rgba(var(--b2-rgb),.1)}
+.pv__mark[aria-pressed="true"]{border-color:transparent;background:var(--g-soft);
+  box-shadow:0 0 0 1px rgba(var(--b3-rgb),.5) inset}
+.pv__mark[aria-pressed="true"] span{color:var(--t1)}
+
+/* Rutas */
+.pv__routes{display:grid;gap:.35rem}
+.pv__route{display:flex;align-items:center;gap:.6rem;padding:.42rem .55rem;border-radius:11px;
+  border:1px solid var(--line);background:var(--ink);cursor:pointer;text-align:left;
+  transition:.3s var(--e)}
+.pv__route i{width:32px;height:18px;border-radius:6px;flex:none}
+.pv__route span{font-size:.72rem;font-weight:600;color:var(--t2);flex:1}
+.pv__route:hover{border-color:rgba(var(--b2-rgb),.55)}
+.pv__route[aria-pressed="true"]{border-color:rgba(var(--b3-rgb),.6);background:rgba(var(--b2-rgb),.12)}
+.pv__route[aria-pressed="true"] span{color:var(--t1)}
+.pv__route em{font-style:normal;font-size:.58rem;color:var(--b3);font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase}
+
+.pv__note{font-size:.66rem;color:var(--t3);line-height:1.5;
+  padding-top:.75rem;border-top:1px solid var(--line)}
+
+@media (max-width:860px){
+  .pv{left:10px;right:10px;bottom:10px;width:auto}
+  .pv__body{max-height:56vh}
+}
+@media (prefers-reduced-motion:reduce){
+  .pv,.pv__body,.pv__head svg{transition:none}
+}

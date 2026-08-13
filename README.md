@@ -8,11 +8,17 @@ Landing page estática para **Atlas**, plataforma de microcréditos / "compra ah
 
 ```
 .
-├── index.html
+├── index.html             ← versión de trabajo (con panel de previsualización)
+├── comparar.html          ← portada para presentarle los 3 al cliente
+├── concepto-a.html        ← la landing completa con el concepto A
+├── concepto-b.html        ← …con el B
+├── concepto-c.html        ← …con el C
+├── build.py               ← regenera los 4 archivos de arriba
 ├── assets/
 │   ├── css/
 │   │   ├── style.css      ← design tokens + todos los estilos
-│   │   └── preview.css    ← panel de previsualización (TEMPORAL)
+│   │   ├── preview.css    ← panel de previsualización (TEMPORAL)
+│   │   └── compare.css    ← portada y barra de conceptos (TEMPORAL)
 │   ├── js/
 │   │   ├── main.js        ← animaciones e interacciones (vanilla)
 │   │   └── preview.js     ← panel de previsualización (TEMPORAL)
@@ -28,8 +34,29 @@ Landing page estática para **Atlas**, plataforma de microcréditos / "compra ah
 
 ```bash
 python3 -m http.server 8788
-# → http://localhost:8788
+# → http://localhost:8788            la versión de trabajo
+# → http://localhost:8788/comparar.html   los 3 conceptos, para el cliente
 ```
+
+## Presentar los 3 conceptos
+
+`comparar.html` es la portada: muestra los tres símbolos con su ícono de app, sus favicons
+y su lockup, y desde ahí se abre la landing completa de cada uno. Dentro de cada versión hay
+una barrita abajo a la izquierda para saltar entre los tres sin volver a la portada.
+
+Las tres páginas se **generan**, no se editan a mano:
+
+```bash
+python3 build.py
+```
+
+Toma `index.html` como fuente, le quita el panel de previsualización, fija el concepto y
+escribe `concepto-a/b/c.html` + `comparar.html`. **Cada vez que cambies contenido en
+`index.html` hay que volver a correrlo**, o las versiones del cliente se quedan viejas.
+
+Cuando el cliente elija, se borran `comparar.html`, `concepto-*.html`, `build.py` y
+`assets/css/compare.css`; y de `index.html` se aplica el concepto elegido siguiendo los
+pasos de la sección de abajo.
 
 ## Secciones
 

@@ -115,7 +115,7 @@
   /* ─────────────────────────────────────────────────────────────────
      5 · Contadores
      ───────────────────────────────────────────────────────────────── */
-  const nf = new Intl.NumberFormat('es-VE');
+  const nf = new Intl.NumberFormat('es-BO');
   const easeOut = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
   function count(el) {
@@ -382,11 +382,11 @@
     const EVERY   = 15;                 // días entre cuotas
 
     const money = (n) =>
-      n.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      n.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     // Fechas reales de cada cuota, a partir de hoy
     (function dates() {
-      const fmt = new Intl.DateTimeFormat('es-VE', { day: 'numeric', month: 'short' });
+      const fmt = new Intl.DateTimeFormat('es-BO', { day: 'numeric', month: 'short' });
       for (let i = 1; i <= N; i++) {
         const d = new Date();
         d.setDate(d.getDate() + EVERY * i);
@@ -404,9 +404,9 @@
 
       out.textContent     = nf.format(amount);
       initOut.textContent = money(initial);
-      tl0.textContent     = '$' + money(initial);
+      tl0.textContent     = 'Bs ' + money(initial);
       totalO.textContent  = money(amount);
-      quotas.forEach((q) => { q.textContent = '$' + money(quota); });
+      quotas.forEach((q) => { q.textContent = 'Bs ' + money(quota); });
 
       slider.style.setProperty('--fill',
         ((amount - slider.min) / (slider.max - slider.min)) * 100 + '%');
@@ -502,7 +502,7 @@
     const dateOut = $('#clockDate');
 
     if (dateOut) {
-      const fmt = new Intl.DateTimeFormat('es-VE', {
+      const fmt = new Intl.DateTimeFormat('es-BO', {
         day: 'numeric', month: 'long', year: 'numeric'
       });
       dateOut.innerHTML = 'Lanzamiento el <b>' + fmt.format(new Date(target)) + '</b>';

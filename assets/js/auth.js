@@ -73,9 +73,9 @@
     email:  (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Escribe un correo válido.',
     user:   (v) => (v.trim().length > 3) || 'Escribe tu correo o teléfono.',
     name:   (v) => (v.trim().length >= 3 && v.trim().includes(' ')) || 'Escribe tu nombre y apellido.',
-    // Cédula venezolana: 6 a 9 dígitos, con o sin puntos
-    cedula: (v) => /^\d{6,9}$/.test(v.replace(/[.\s]/g, '')) || 'Cédula inválida. Solo números.',
-    phone:  (v) => /^\d{10}$/.test(v.replace(/[\s-]/g, '')) || 'Son 10 dígitos, con el código de área.',
+    // Cédula de identidad boliviana: 5 a 8 dígitos, con o sin puntos
+    cedula: (v) => /^\d{5,8}$/.test(v.replace(/[.\s]/g, '')) || 'Cédula inválida. Solo números.',
+    phone:  (v) => /^[67]\d{7}$/.test(v.replace(/[\s-]/g, '')) || 'Son 8 dígitos y empieza en 6 o 7.',
     pass:   (v) => (v.length >= 8) || 'La contraseña necesita al menos 8 caracteres.',
     login:  (v) => (v.length >= 1) || 'Escribe tu contraseña.'
   };

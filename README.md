@@ -1,7 +1,12 @@
 # Atlas — Landing Page
 
-Landing page estática para **Atlas**, plataforma de microcréditos / "compra ahora, paga después"
-(modelo tipo Cashea: inicial + 3 cuotas quincenales, 0% intereses, niveles de usuario).
+Landing page estática para **Atlas**, plataforma boliviana de microcréditos /
+"compra ahora, paga después": inicial + 3 cuotas quincenales, 0% intereses y niveles de usuario.
+
+> **Mercado: Bolivia.** Cashea (Venezuela) es solo la referencia de categoría; el modelo de
+> negocio de Atlas es distinto y está pendiente de definir. Todo el contenido actual —montos en
+> bolivianos, CI, +591, ciudades, los porcentajes de inicial y el número de cuotas— es un
+> supuesto de trabajo que hay que ajustar cuando llegue el modelo real.
 
 **Sin build ni frameworks.** Se abre con doble clic y funciona offline (lo único que sale a
 la red son las fuentes de Google, con fallback al sistema).
@@ -161,10 +166,13 @@ Los textos son **placeholders realistas, no datos verificados**:
 | Contadores del hero | "60s", "500+ comercios" — poner cifras reales |
 | Medidor del bento | "42s promedio" |
 | Niveles | Porcentajes de inicial y montos de cupo de cada nivel |
+| **Modelo de negocio** | Cuotas, plazos y % de inicial son supuestos: confirmar con el modelo real |
+| Montos | Todo está en bolivianos con cifras de ejemplo |
 | Calculadora | `data-initial` de cada chip, `N` (cuotas) y `EVERY` (días) en `main.js` |
 | Opiniones | **Son ficticias.** Sustituir por testimonios reales con consentimiento |
 | Categorías | Que los 12 rubros coincidan con la red real de aliados |
 | Requisitos (descarga) | Confirmar con legal la edad mínima y los documentos aceptados |
+| Validaciones | CI de 5-8 dígitos y celular de 8 empezando en 6/7, en `auth.js` |
 | Comparativa | Verificar que las afirmaciones sobre tarjetas y prestamistas sean defendibles |
 | Panel de aliados | Cifras de demo |
 | Enlaces de tiendas | Los `href="#"` de App Store / Google Play |

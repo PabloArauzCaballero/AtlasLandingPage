@@ -74,16 +74,35 @@
     float dist = -mv.z;
     vFog = 1.0 - smoothstep(11.0, 26.0, dist);`;
 
-  /* ═══════════ 1 · Relleno: los comercios ═══════════ */
+  /* ═══════════ 1 · Relleno: los comercios ═══════════
+     La densidad no es pareja: se apiña alrededor de las ciudades, como la
+     población real. Una nube uniforme se lee como textura generada. */
+  const cityXY = GEO.cities.map((c) => project(c.lon, c.lat));
+
+  function density(x, y) {
+    let d = 0.16;                            // piso: el campo nunca queda vacío
+    for (let i = 0; i < cityXY.length; i++) {
+      const dx = x - cityXY[i][0], dy = y - cityXY[i][1];
+      const r2 = dx * dx + dy * dy;
+      d += (GEO.cities[i].big ? 1.15 : 0.6) * Math.exp(-r2 / 0.85);
+    }
+    return Math.min(d, 1);
+  }
+
   const fill = [];
-  const STEP = 0.085;                 // grados entre candidatos
+  const wgt  = [];
+  const STEP = 0.062;                        // grados entre candidatos
   for (let la = la0; la <= la1; la += STEP) {
     for (let lo = lo0; lo <= lo1; lo += STEP) {
       // Desorden: una retícula perfecta se lee como generada
-      const jx = lo + (Math.random() - 0.5) * STEP * 0.9;
-      const jy = la + (Math.random() - 0.5) * STEP * 0.9;
+      const jx = lo + (Math.random() - 0.5) * STEP * 0.95;
+      const jy = la + (Math.random() - 0.5) * STEP * 0.95;
       const [x, y] = project(jx, jy);
-      if (inside(x, y)) fill.push(x, y);
+      if (!inside(x, y)) continue;
+      const w = density(x, y);
+      if (Math.random() > w) continue;        // el sorteo produce el apiñamiento
+      fill.push(x, y);
+      wgt.push(w);
     }
   }
 
@@ -106,7 +125,7 @@
     tmp.offsetHSL(0, 0, (Math.random() - 0.5) * 0.12);
     col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
 
-    siz[i] = 1.5 + Math.random() * 2.1;
+    siz[i] = (1.3 + Math.random() * 1.5) * (0.75 + 0.55 * wgt[i]);
   }
 
   const geo = new THREE.BufferGeometry();
@@ -274,6 +293,33 @@
     arcs.push(mat);
   });
 
+  /* ═══════════ 5 · Etiquetas ═══════════
+     Son HTML, no textura: se leen nítidas en cualquier pantalla y las
+     posiciona el mismo 3D, proyectando su punto a coordenadas de pantalla. */
+  const labelLayer = document.createElement('div');
+  labelLayer.className = 'mapa__labels';
+  host.appendChild(labelLayer);
+
+  const labels = [];
+  GEO.cities.forEach((c, i) => {
+    if (!c.big) return;                       // solo las tres grandes, o satura
+    const el = document.createElement('span');
+    el.className = 'mapa__tag';
+    el.textContent = c.name;
+    labelLayer.appendChild(el);
+    labels.push({ el, v: cityPts[i].v });
+  });
+
+  const ndc = new THREE.Vector3();
+  function placeLabels() {
+    const w = host.clientWidth, h = host.clientHeight;
+    for (const l of labels) {
+      ndc.copy(l.v).applyMatrix4(map.matrixWorld).project(camera);
+      l.el.style.transform =
+        `translate(-50%,-50%) translate(${(ndc.x * 0.5 + 0.5) * w}px, ${(-ndc.y * 0.5 + 0.5) * h}px)`;
+    }
+  }
+
   /* ── Montaje ── */
   renderer.setClearColor(0x000000, 0);
   host.appendChild(renderer.domElement);
@@ -310,6 +356,9 @@
 
     map.rotation.y = mx * 0.26;
     map.rotation.x = -0.38 + my * 0.14;
+
+    map.updateMatrixWorld();
+    placeLabels();
 
     fillMat.uniforms.uTime.value = t;
     cityMat.uniforms.uTime.value = t;

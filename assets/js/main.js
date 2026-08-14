@@ -230,7 +230,9 @@
      desde el evento de scroll se siente escalonado.
      ───────────────────────────────────────────────────────────────── */
   (function scrollLinked() {
-    if (SOFT) return;
+    // Por debajo de 1080 el CSS ya ignora --sp: mantener el bucle vivo sería
+    // gastar cuadros para nada.
+    if (SOFT || innerWidth < 1080) return;
 
     const targets = [
       { el: $('.tour__sticky'), sec: $('#tour') },
@@ -645,6 +647,9 @@
   (function field() {
     const cv = $('#fx');
     if (!cv || SOFT) return;
+    // Compara cada punto contra todos los demás: en un teléfono es CPU
+    // constante a cambio de un detalle que casi no se distingue.
+    if (innerWidth < 860 || TOUCH) { cv.style.display = 'none'; return; }
     const ctx = cv.getContext('2d');
     const TONES = ['139,92,246', '79,123,255', '45,227,176'];
     let w, h, dots = [], raf = null;

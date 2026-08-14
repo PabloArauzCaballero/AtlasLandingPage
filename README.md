@@ -11,10 +11,13 @@ Landing page estática para **Atlas**, plataforma boliviana de microcréditos /
 **Sin build ni frameworks.** Se abre con doble clic y funciona offline (lo único que sale a
 la red son las fuentes de Google, con fallback al sistema).
 
-La única dependencia es **Three.js**, y está vendorizada en `assets/js/vendor/` — no se
-llama a ningún CDN. Se carga con `defer` y sirve solo para el mapa decorativo de la sección
-Cobertura: si no llega, no hay WebGL o el equipo pide menos movimiento, la sección se ve
-igual sin él.
+La única dependencia es **Three.js**, vendorizada en `assets/js/vendor/` — no se llama a
+ningún CDN. Sirve solo para el mapa decorativo de la sección Cobertura, y **se descarga bajo
+demanda**: nunca en teléfonos, y en escritorio recién cuando esa sección se acerca. Si no
+llega, no hay WebGL o el equipo pide menos movimiento, la sección se ve igual sin él.
+
+Eso deja la primera carga en **~167 KB** en móvil, contra los ~760 KB que pesaba cuando la
+librería venía en toda visita.
 
 ```
 .
@@ -263,6 +266,23 @@ Tres cosas más definen el carácter:
 
 Todo se apaga con `prefers-reduced-motion` y las transformaciones ligadas al scroll no corren
 por debajo de 1080px.
+
+## Rendimiento en móvil
+
+Un teléfono no perdona lo que un escritorio disimula. Lo que está apagado por debajo de
+860px, y por qué:
+
+| Qué | Por qué |
+|---|---|
+| Three.js y el mapa WebGL | 600 KB y un render continuo por un adorno que en pantalla chica queda de fondo |
+| Las tres manchas de la aurora | 60vw con `blur(110px)` **y animadas**: es lo más caro de toda la página. Se cambian por un fondo pintado una sola vez |
+| El campo de partículas | Compara cada punto contra todos: CPU constante por un detalle que casi no se distingue |
+| El desenfoque de las entradas | Obliga a repintar cada elemento que aparece |
+| `backdrop-filter` en nav y tarjetas | Obliga a releer el fondo en cada cuadro de scroll |
+| El bucle del scroll ligado | Por debajo de 1080 el CSS ya ignora `--sp`: mantenerlo vivo sería gastar cuadros para nada |
+
+Si agregas efectos, la regla es esa: **`filter`, `backdrop-filter` y sombras muy difusas sobre
+superficies grandes** son los que se sienten, no la cantidad de elementos.
 
 ## Detalles técnicos
 

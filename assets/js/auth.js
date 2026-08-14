@@ -95,12 +95,72 @@
   }
 
   $$('[data-rule]').forEach((input) => {
-    // No regañamos mientras escribe: primero al salir del campo
-    input.addEventListener('blur', () => validate(input));
+    // Solo se marca en rojo un campo donde llegaste a escribir. Salir de un
+    // campo vacío que apenas tocaste no es un error todavía: eso se avisa
+    // al enviar, no antes.
+    input.addEventListener('blur', () => {
+      if (input.value.trim()) validate(input);
+    });
     input.addEventListener('input', () => {
       if (input.closest('.field').classList.contains('bad')) validate(input);
+      live();
     });
   });
+
+  /* ── Tarjeta en vivo ──────────────────────────────────────────────
+     El panel deja de ser decoración: muestra la cuenta armándose con lo
+     que vas escribiendo. ── */
+  const card = $('#liveCard');
+  const cardName = $('#cardName');
+  const cardNo = $('#cardNo');
+  const readyList = $('#ready');
+
+  function live() {
+    if (cardName) {
+      const v = ($('#name')?.value || '').trim().replace(/\s+/g, ' ');
+      if (v.length > 1) {
+        const p = v.split(' ');
+        // Formato de tarjeta: inicial del nombre + apellido
+        const txt = (p.length > 1 ? p[0][0] + '. ' + p.slice(1).join(' ') : p[0]).toUpperCase();
+        cardName.textContent = txt.slice(0, 22);
+        card.classList.add('named');
+      } else {
+        cardName.textContent = 'TU NOMBRE';
+        card.classList.remove('named');
+      }
+    }
+    if (cardNo) {
+      const ci = ($('#cedula')?.value || '').replace(/\D/g, '');
+      cardNo.textContent = ci.length >= 4 ? ci.slice(-4) : '••••';
+    }
+    if (readyList) {
+      $$('li', readyList).forEach((li) => {
+        const input = $('#' + li.dataset.for);
+        const rule = input && RULES[input.dataset.rule];
+        li.classList.toggle('ok', !!(input && rule && input.value.trim() && rule(input.value) === true));
+      });
+    }
+  }
+  live();
+
+  /* Inclinación y brillo siguiendo al puntero: la vuelve un objeto físico */
+  if (card && !matchMedia('(hover: none)').matches &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const side = card.closest('.auth__side') || card;
+    side.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--rx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+      card.style.setProperty('--ry', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+      card.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+      card.classList.add('lit');
+    });
+    side.addEventListener('mouseleave', () => {
+      card.style.setProperty('--rx', 0);
+      card.style.setProperty('--ry', 0);
+      card.classList.remove('lit');
+    });
+  }
 
   /* ── Envío ────────────────────────────────────────────────────────── */
   const form = $('#authForm');

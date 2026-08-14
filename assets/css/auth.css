@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 .auth{position:relative;z-index:2;min-height:100dvh;display:grid;
-  grid-template-columns:1fr .88fr}
+  grid-template-columns:1fr .92fr;align-items:start}
 
 /* ── Columna del formulario ───────────────────────────────────────── */
 .auth__main{display:flex;flex-direction:column;padding:clamp(1.5rem,3vw,2.2rem)}
@@ -23,7 +23,8 @@
 
 /* ── Pasos del registro ───────────────────────────────────────────── */
 .steps{display:flex;align-items:center;gap:.5rem;margin-bottom:1.8rem}
-.steps li{display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600;color:var(--t3)}
+.steps li{display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600;
+  color:var(--t3);white-space:nowrap}
 .steps li::after{content:'';width:22px;height:1px;background:var(--line-2);flex:none}
 .steps li:last-child::after{display:none}
 .steps b{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;
@@ -113,12 +114,22 @@
 .auth__legal{font-size:.76rem;color:var(--t3);text-align:center;margin-top:auto;padding-top:2rem}
 
 /* ── Panel de marca ───────────────────────────────────────────────── */
-.auth__side{position:relative;overflow:hidden;display:flex;flex-direction:column;
-  justify-content:center;gap:2rem;padding:clamp(2rem,4vw,3.4rem);
-  background:var(--g-deep);border-left:1px solid var(--line)}
-.auth__side::before{content:'';position:absolute;width:70%;aspect-ratio:1;border-radius:50%;
-  top:-18%;right:-22%;filter:blur(70px);
-  background:radial-gradient(circle,rgba(var(--b3-rgb),.4),transparent 65%)}
+/* El panel se queda pegado al viewport. Sin esto su contenido se centra
+   dentro de una columna tan alta como el formulario, y al abrir la página
+   quedaba por debajo del fold: el panel se veía vacío. */
+.auth__side{position:sticky;top:0;align-self:start;height:100dvh;
+  overflow:hidden;display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(1.2rem,2.4vw,2rem);padding:clamp(1.8rem,3.4vw,3rem);
+  border-left:1px solid var(--line);
+  /* Fondo profundo y neutro: con el degradado de marca la tarjeta se
+     confundía con el panel y perdía todo el relieve. */
+  background:
+    radial-gradient(120% 95% at 78% 4%,rgba(var(--b1-rgb),.5),transparent 62%),
+    radial-gradient(90% 70% at 10% 100%,rgba(var(--b2-rgb),.28),transparent 66%),
+    var(--navy)}
+.auth__side::before{content:'';position:absolute;width:62%;aspect-ratio:1;border-radius:50%;
+  top:-16%;right:-20%;filter:blur(80px);
+  background:radial-gradient(circle,rgba(var(--b3-rgb),.22),transparent 66%)}
 .auth__side>*{position:relative}
 
 .side__quote{font-family:var(--display);font-weight:700;letter-spacing:-.03em;line-height:1.24;
@@ -146,12 +157,75 @@
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width:940px){
   .auth{grid-template-columns:1fr;min-height:0}
-  .auth__side{order:-1;border-left:0;border-bottom:1px solid var(--line);gap:1.5rem}
-  .auth__side .side__quote{font-size:1.35rem}
+  /* El panel iba primero y empujaba el formulario fuera de la pantalla.
+     En un alta, la acción manda: el panel pasa a ser el refuerzo de abajo. */
+  .auth__side{border-left:0;border-top:1px solid var(--line);gap:1.4rem}
+  .auth__side .side__quote{font-size:1.3rem}
   .auth__box{margin-block:2rem}
-  .auth__legal{padding-top:2.4rem}
+  .auth__legal{padding-top:2rem;padding-bottom:.5rem}
 }
 @media (max-width:520px){
   .row,.alt{grid-template-columns:1fr}
   .side__stats{gap:1.4rem}
+  /* Las etiquetas se partían en dos líneas y el indicador perdía la forma */
+  .steps{gap:.35rem}
+  .steps li{font-size:.72rem;gap:.35rem}
+  .steps li::after{width:12px}
+}
+
+
+/* ── Tarjeta en vivo ────────────────────────────────────────────────
+   Reacciona a lo que se escribe en el formulario y se inclina siguiendo
+   al puntero, con el brillo moviéndose con él. */
+.preview{display:flex;flex-direction:column;gap:1rem;perspective:1100px}
+.preview__lbl{font-size:.7rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.5)}
+
+.acard--live{position:relative;width:min(100%,340px);aspect-ratio:1.58;border-radius:20px;
+  overflow:hidden;padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:.4rem;
+  background:linear-gradient(140deg,var(--navy),var(--b1) 58%,var(--b2));
+  border:1px solid rgba(var(--b3-rgb),.4);
+  box-shadow:0 40px 70px -28px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.08) inset;
+  transform:perspective(1100px) rotateY(calc(var(--rx,0) * 13deg)) rotateX(calc(var(--ry,0) * -10deg));
+  transition:transform .5s var(--spring,cubic-bezier(.22,1,.36,1))}
+.acard--live .acard__top{display:flex;align-items:center;gap:.5rem;
+  font-family:var(--display);font-weight:800;font-size:1rem;letter-spacing:-.02em}
+.acard--live .acard__chip{width:40px;height:29px;border-radius:7px;margin-top:.5rem;
+  background:linear-gradient(140deg,#F0D89A,#B9922F);
+  box-shadow:0 1px 0 rgba(255,255,255,.45) inset}
+.acard--live .acard__no{margin-top:auto;font-family:var(--display);font-weight:700;
+  font-size:.94rem;letter-spacing:.08em;color:rgba(255,255,255,.92)}
+.acard--live .acard__no b{color:#fff}
+.acard--live .acard__bot{display:flex;justify-content:space-between;align-items:center;
+  font-size:.66rem;letter-spacing:.12em;color:rgba(255,255,255,.7)}
+.acard--live .acard__bot span{transition:color .3s}
+.acard--live.named .acard__bot span{color:#fff}
+.acard--live .acard__bot b{color:var(--b3)}
+/* El brillo sigue al puntero: es lo que la hace sentir un objeto físico */
+.acard__gloss{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(340px circle at var(--gx,50%) var(--gy,50%),
+    rgba(255,255,255,.22),transparent 62%)}
+.acard--live:hover .acard__gloss,.acard--live.lit .acard__gloss{opacity:1}
+
+/* Campos que ya están listos */
+.ready{display:flex;flex-wrap:wrap;gap:.45rem}
+.ready li{display:flex;align-items:center;gap:.4rem;padding:.32rem .7rem;border-radius:99px;
+  font-size:.74rem;font-weight:600;color:rgba(255,255,255,.55);
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  transition:.4s var(--spring,cubic-bezier(.22,1,.36,1))}
+.ready i{position:relative;width:13px;height:13px;border-radius:50%;flex:none;
+  border:1.5px solid rgba(255,255,255,.35);transition:.3s}
+.ready .ok{color:#fff;background:rgba(var(--b3-rgb),.18);border-color:rgba(var(--b3-rgb),.5)}
+.ready .ok i{background:var(--b3);border-color:transparent}
+.ready .ok i::after{content:'';position:absolute;left:4px;top:1.5px;width:3px;height:6px;
+  border:solid var(--on-brand);border-width:0 1.6px 1.6px 0;rotate:45deg}
+
+.side__list--tight{gap:.8rem}
+.side__list--tight span{font-size:.83rem}
+
+@media (max-width:940px){
+  .auth__side{position:static;height:auto;padding-block:2.4rem}
+  .acard--live{margin-inline:auto}
+  .preview__lbl{text-align:center}
+  .ready{justify-content:center}
 }

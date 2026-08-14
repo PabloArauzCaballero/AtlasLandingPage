@@ -186,12 +186,31 @@
   </div>
 
   <aside class="auth__side">
-    <p class="side__quote">Todo lo que necesitas para empezar</p>
+      <div class="preview">
+        <p class="preview__lbl">Así se verá tu cuenta</p>
+        <div class="acard acard--live" id="liveCard">
+          <span class="acard__shine"></span>
+          <span class="acard__gloss" id="cardGloss"></span>
+          <div class="acard__top">
+            <svg width="26" height="26" viewBox="14 12 92 96" aria-hidden="true"><use href="#markA"/></svg>
+            <span>Atlas</span>
+          </div>
+          <span class="acard__chip"></span>
+          <div class="acard__no">•••• •••• •••• <b id="cardNo">••••</b></div>
+          <div class="acard__bot"><span id="cardName">TU NOMBRE</span><b id="cardLvl">NIVEL 1</b></div>
+        </div>
+      </div>
+      <ul class="ready" id="ready">
+        <li data-for="name"><i></i>Nombre y apellido</li>
+        <li data-for="cedula"><i></i>Cédula</li>
+        <li data-for="phone"><i></i>Teléfono</li>
+        <li data-for="email"><i></i>Correo</li>
+        <li data-for="pass"><i></i>Contraseña</li>
+      </ul>
 
-    <ul class="side__list">
+    <ul class="side__list side__list--tight">
       <li><i></i><div><b>Aprobación en menos de un minuto</b><span>Sin buró de crédito, sin aval y sin comprobante de ingresos.</span></div></li>
-      <li><i></i><div><b>Inicial y 3 cuotas quincenales</b><span>Ves el plan completo antes de confirmar cualquier compra.</span></div></li>
-      <li><i></i><div><b>Tu cupo crece contigo</b><span>Cada pago puntual te sube de nivel y te baja la inicial.</span></div></li>
+            <li><i></i><div><b>Tu cupo crece contigo</b><span>Cada pago puntual te sube de nivel y te baja la inicial.</span></div></li>
     </ul>
 
     <div class="side__stats">

@@ -245,6 +245,49 @@ float rim = 1.0 - clamp(dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0, 1.0);
 gl_FragColor = vec4(uColor, 1.0) * pow(rim, 3.0) * 1.15;
 ```
 
+### Objetos "2.5D" en CSS
+
+Una tarjeta, un teléfono o cualquier objeto que gira con `transform` cae en la misma trampa
+que el 3D mal hecho, y por el mismo motivo: **gira con la luz horneada en el fondo**. El
+degradado no cambia nunca, así que se lee como una imagen plana rotada — que es literalmente
+lo que hace ver mal un compositing de película.
+
+La regla es una sola: **el giro y la luz salen de la misma variable.**
+
+```css
+@property --rx{syntax:'<number>';inherits:true;initial-value:0}
+@property --ry{syntax:'<number>';inherits:true;initial-value:0}
+
+.objeto{
+  transform:perspective(1000px) rotateY(calc(var(--rx) * 20deg))
+                                rotateX(calc(var(--ry) * -13deg));
+  box-shadow:
+    inset calc(var(--rx) * 3.4px) calc(var(--ry) * -3.4px) 0 rgba(255,255,255,.42), /* canto */
+    inset calc(var(--rx) * -3.6px) calc(var(--ry) * 3.6px) 0 rgba(0,0,0,.5),
+    calc(var(--rx) * -8px)  calc(10px + var(--ry) * -4px)  14px -8px rgba(0,0,0,.8),  /* contacto */
+    calc(var(--rx) * -24px) calc(30px + var(--ry) * -12px) 52px -20px rgba(0,0,0,.9); /* ambiente */
+}
+/* El reflejo se desplaza al contrario de la inclinación */
+.objeto::before{background:radial-gradient(72% 58% at
+  calc(50% - var(--rx) * 46%) calc(24% - var(--ry) * 40%),
+  rgba(255,255,255,.26),transparent 66%);mix-blend-mode:screen}
+```
+
+`@property` es lo que permite interpolar esas variables, así que sirven tanto para un vaivén
+con `@keyframes` como para seguir al puntero desde JS.
+
+Lo demás que hace falta, por orden de impacto:
+
+1. **Canto.** Sin grosor visible la cara se lee como un rectángulo dibujado.
+2. **Dos sombras**, no una: una de contacto corta y densa, y otra de ambiente amplia. Las dos se
+   corren al contrario del giro.
+3. **Grano.** Una superficie perfectamente lisa delata que es un dibujo. Un ruido al 13% en
+   `mix-blend-mode:overlay` alcanza.
+4. **Textura de superficie.** Un patrón muy tenue rompe el degradado plano.
+5. **Fuera el barrido de brillo en bucle.** Esa banda diagonal que cruza sola cada pocos
+   segundos es el efecto que más grita "plantilla". Si hay reflejo, que dependa de la
+   inclinación o del puntero.
+
 ### Datos geográficos
 
 - Contorno en `[lon, lat]`, en **su propio archivo**. Cambiar de país debe ser cambiar ese
@@ -447,6 +490,7 @@ Todos aparecieron en un proyecto real y todos costaron tiempo. Léelos antes de 
 | Un resplandor inunda la escena | Fresnel con `BackSide` sobre un cuerpo transparente (ver §5) |
 | Se ve pixelado | Tres causas distintas y suelen darse juntas: contorno de baja resolución, borde dibujado con puntos, y renderizar por debajo del `devicePixelRatio` dejando que el navegador escale |
 | Todo se ve neón y plano | Blending aditivo y falta de luz direccional |
+| Un objeto que gira se ve como una calcomanía | La luz está horneada en el fondo y no se mueve con el giro (ver §5) |
 | El 3D nunca arranca | Sondeo de capacidades demasiado temprano (ver §7) |
 
 ### Layout

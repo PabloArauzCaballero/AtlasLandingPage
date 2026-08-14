@@ -1241,30 +1241,75 @@ table{border-collapse:collapse;width:100%}
 .fo__in{animation:bobObj var(--dur,8s) ease-in-out infinite var(--delay,0s)}
 @keyframes bobObj{0%,100%{translate:0 -10px;rotate:-1.5deg}50%{translate:0 10px;rotate:1.5deg}}
 
-/* Tarjeta Atlas */
-.acard{position:relative;width:206px;aspect-ratio:1.58;border-radius:18px;overflow:hidden;
-  padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;
-  background:linear-gradient(140deg,var(--navy),var(--b1) 58%,var(--b2));
-  border:1px solid rgba(var(--b3-rgb),.35);
-  box-shadow:0 40px 70px -30px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.07) inset;
-  animation:swayCard 12s ease-in-out infinite}
-@keyframes swayCard{0%,100%{transform:rotateY(-20deg) rotateX(6deg)}
-  50%{transform:rotateY(20deg) rotateX(-4deg)}}
-.acard__shine{position:absolute;inset:0;
-  background:linear-gradient(105deg,transparent 34%,rgba(255,255,255,.28) 48%,transparent 60%);
-  translate:-120% 0;animation:cardShine 6s var(--e) infinite}
-@keyframes cardShine{0%,68%{translate:-120% 0}100%{translate:120% 0}}
-.acard__top{display:flex;align-items:center;gap:.45rem;font-family:var(--display);
-  font-weight:800;font-size:.9rem;letter-spacing:-.02em}
-.acard__chip{width:34px;height:25px;border-radius:6px;margin-top:.35rem;
-  background:linear-gradient(140deg,#F0D89A,#B9922F);
-  box-shadow:0 1px 0 rgba(255,255,255,.4) inset}
-.acard__no{margin-top:auto;font-family:var(--display);font-weight:700;font-size:.8rem;
-  letter-spacing:.06em;color:rgba(255,255,255,.9)}
-.acard__bot{display:flex;justify-content:space-between;align-items:center;
-  font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.66)}
-.acard__bot b{color:var(--b3)}
+/* ── Tarjeta Atlas ──────────────────────────────────────────────────
+   Lo que hacía que se leyera como un efecto barato era que giraba con la
+   luz horneada en el fondo: el degradado no cambiaba nunca. Un objeto real
+   mueve su reflejo al inclinarse, y en sentido contrario al giro.
 
+   Ahora --rx/--ry mandan a la vez el giro, el brillo especular, el canto y
+   la sombra. Registradas con @property para poder interpolarlas. */
+@property --rx{syntax:'<number>';inherits:true;initial-value:0}
+@property --ry{syntax:'<number>';inherits:true;initial-value:0}
+
+.acard{--rx:0;--ry:0;
+  position:relative;width:206px;aspect-ratio:1.585;border-radius:15px;overflow:hidden;
+  padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;isolation:isolate;
+  background:linear-gradient(146deg,var(--navy) 4%,var(--b1) 52%,var(--b2) 96%);
+  transform:perspective(1000px) rotateY(calc(var(--rx) * 20deg)) rotateX(calc(var(--ry) * -13deg));
+  box-shadow:
+    /* Canto: se enciende del lado que mira a la luz y se apaga del opuesto.
+       Sin este grosor la cara se lee como un rectángulo dibujado. */
+    inset calc(var(--rx) * 3.4px) calc(var(--ry) * -3.4px) 0 rgba(255,255,255,.42),
+    inset calc(var(--rx) * -3.6px) calc(var(--ry) * 3.6px) 0 rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(0,0,0,.35),
+    0 0 0 1px rgba(255,255,255,.12),
+    /* Dos sombras: uno de contacto, corta y densa, y otra de ambiente.
+       Las dos se corren al contrario del giro, como las de un objeto real. */
+    calc(var(--rx) * -8px) calc(10px + var(--ry) * -4px) 14px -8px rgba(0,0,0,.8),
+    calc(var(--rx) * -24px) calc(30px + var(--ry) * -12px) 52px -20px rgba(0,0,0,.9)}
+
+/* Reflejo especular: se desplaza al contrario de la inclinación */
+.acard::before{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  mix-blend-mode:screen;
+  background:radial-gradient(72% 58% at calc(50% - var(--rx) * 46%) calc(24% - var(--ry) * 40%),
+    rgba(255,255,255,.26),rgba(255,255,255,.04) 40%,transparent 66%)}
+
+/* Grano: una superficie perfectamente lisa delata que es un dibujo */
+.acard::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+  opacity:.13;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Banda de reflejo, atada a la inclinación en vez de un barrido en bucle */
+.fo--card .acard{animation:cardSway 13s ease-in-out infinite}
+@keyframes cardSway{0%,100%{--rx:-.6;--ry:.34}50%{--rx:.6;--ry:-.24}}
+.acard__weave{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background-image:
+    repeating-linear-gradient(58deg,rgba(255,255,255,.045) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(-58deg,rgba(0,0,0,.05) 0 1px,transparent 1px 13px)}
+.acard__shine{position:absolute;inset:-25%;z-index:2;pointer-events:none;
+  background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.1) 48%,transparent 58%);
+  translate:calc(var(--rx) * 30%) 0}
+
+.acard__top{position:relative;z-index:1;display:flex;align-items:center;gap:.45rem;
+  font-family:var(--display);font-weight:800;font-size:.9rem;letter-spacing:-.02em}
+
+/* Chip con contactos: el rectángulo dorado liso se veía de juguete */
+.acard__chip{position:relative;z-index:1;width:36px;height:27px;border-radius:5px;margin-top:.4rem;
+  background:linear-gradient(150deg,#F7E6B0,#C9A43F 46%,#8C6E22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.62),inset 0 -1px 2px rgba(0,0,0,.4)}
+.acard__chip::before{content:'';position:absolute;inset:20% 15%;border-radius:2px;
+  border:1px solid rgba(0,0,0,.32)}
+.acard__chip::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;
+  background:rgba(0,0,0,.32)}
+
+.acard__no{position:relative;z-index:1;margin-top:auto;font-family:var(--display);
+  font-weight:700;font-size:.8rem;letter-spacing:.06em;color:rgba(255,255,255,.92);
+  text-shadow:0 1px 1px rgba(0,0,0,.4)}
+.acard__bot{position:relative;z-index:1;display:flex;justify-content:space-between;
+  align-items:center;gap:.8rem;font-size:.6rem;letter-spacing:.1em;
+  color:rgba(255,255,255,.72);text-shadow:0 1px 1px rgba(0,0,0,.35)}
+.acard__bot b{color:var(--b3)}
 /* Moneda */
 .coin{position:relative;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;
   font-family:var(--display);font-weight:800;font-size:1.45rem;letter-spacing:-.03em;color:var(--navy);

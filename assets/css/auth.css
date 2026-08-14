@@ -181,31 +181,26 @@
 .preview__lbl{font-size:.7rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
   color:rgba(255,255,255,.5)}
 
-.acard--live{position:relative;width:min(100%,340px);aspect-ratio:1.58;border-radius:20px;
-  overflow:hidden;padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:.4rem;
-  background:linear-gradient(140deg,var(--navy),var(--b1) 58%,var(--b2));
-  border:1px solid rgba(var(--b3-rgb),.4);
-  box-shadow:0 40px 70px -28px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.08) inset;
-  transform:perspective(1100px) rotateY(calc(var(--rx,0) * 13deg)) rotateX(calc(var(--ry,0) * -10deg));
-  transition:transform .5s var(--spring,cubic-bezier(.22,1,.36,1))}
-.acard--live .acard__top{display:flex;align-items:center;gap:.5rem;
-  font-family:var(--display);font-weight:800;font-size:1rem;letter-spacing:-.02em}
-.acard--live .acard__chip{width:40px;height:29px;border-radius:7px;margin-top:.5rem;
-  background:linear-gradient(140deg,#F0D89A,#B9922F);
-  box-shadow:0 1px 0 rgba(255,255,255,.45) inset}
-.acard--live .acard__no{margin-top:auto;font-family:var(--display);font-weight:700;
-  font-size:.94rem;letter-spacing:.08em;color:rgba(255,255,255,.92)}
+/* Hereda todo el tratamiento físico de .acard en style.css: aquí solo
+   cambia el tamaño y de dónde salen --rx/--ry (del puntero, no de un
+   vaivén). La transición va sobre las variables, así el giro, el reflejo,
+   el canto y la sombra se mueven juntos. */
+.acard--live{width:min(100%,340px);border-radius:19px;padding:1.3rem 1.4rem;gap:.4rem;
+  transition:--rx .5s var(--glide),--ry .5s var(--glide)}
+.acard--live .acard__top{font-size:1rem;gap:.5rem}
+.acard--live .acard__chip{width:44px;height:32px;border-radius:6px;margin-top:.5rem}
+.acard--live .acard__no{font-size:.94rem;letter-spacing:.08em}
 .acard--live .acard__no b{color:#fff}
-.acard--live .acard__bot{display:flex;justify-content:space-between;align-items:center;
-  font-size:.66rem;letter-spacing:.12em;color:rgba(255,255,255,.7)}
+.acard--live .acard__bot{font-size:.66rem;letter-spacing:.12em}
 .acard--live .acard__bot span{transition:color .3s}
 .acard--live.named .acard__bot span{color:#fff}
 .acard--live .acard__bot b{color:var(--b3)}
-/* El brillo sigue al puntero: es lo que la hace sentir un objeto físico */
-.acard__gloss{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
-  background:radial-gradient(340px circle at var(--gx,50%) var(--gy,50%),
-    rgba(255,255,255,.22),transparent 62%)}
-.acard--live:hover .acard__gloss,.acard--live.lit .acard__gloss{opacity:1}
+/* Halo que sigue al puntero, encima del reflejo propio de la tarjeta */
+.acard__gloss{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;
+  transition:opacity .4s;mix-blend-mode:screen;
+  background:radial-gradient(300px circle at var(--gx,50%) var(--gy,50%),
+    rgba(255,255,255,.16),transparent 62%)}
+.acard--live.lit .acard__gloss{opacity:1}
 
 /* Campos que ya están listos */
 .ready{display:flex;flex-wrap:wrap;gap:.45rem}

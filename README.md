@@ -8,6 +8,12 @@ Landing page estática para **Atlas**, plataforma boliviana de microcréditos /
 > bolivianos, CI, +591, ciudades, los porcentajes de inicial y el número de cuotas— es un
 > supuesto de trabajo que hay que ajustar cuando llegue el modelo real.
 
+> **¿Vas a construir otro proyecto con este mismo estándar?**
+> [`PLAYBOOK-DISENO.md`](PLAYBOOK-DISENO.md) es el manual transferible: reglas de sistema de
+> diseño, movimiento, 3D, responsive, rendimiento y accesibilidad, más las técnicas de
+> diagnóstico y una lista de errores concretos con su causa raíz. Está escrito para que otro
+> agente lo siga en un proyecto distinto, sin arrastrar nada de Atlas.
+
 **Sin build ni frameworks.** Se abre con doble clic y funciona offline (lo único que sale a
 la red son las fuentes de Google, con fallback al sistema).
 

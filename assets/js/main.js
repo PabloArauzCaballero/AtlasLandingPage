@@ -505,6 +505,21 @@
   })();
 
   /* ─────────────────────────────────────────────────────────────────
+     10b · Tabla comparativa: apaga el degradado al llegar al final
+     ───────────────────────────────────────────────────────────────── */
+  (function tableEdge() {
+    const wrap = $('.table-wrap');
+    if (!wrap) return;
+    const check = () => {
+      const end = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 2;
+      wrap.classList.toggle('at-end', end);
+    };
+    wrap.addEventListener('scroll', check, { passive: true });
+    addEventListener('resize', check);
+    check();
+  })();
+
+  /* ─────────────────────────────────────────────────────────────────
      11 · FAQ (uno abierto a la vez)
      ───────────────────────────────────────────────────────────────── */
   const asks = $$('.ask');

@@ -1388,3 +1388,39 @@ table{border-collapse:collapse;width:100%}
 @media (prefers-reduced-motion:reduce){
   .device--tour,.hero__stage{transform:none}
 }
+
+/* ── Arreglos de responsive ─────────────────────────────────────────── */
+
+/* La tabla comparativa scrollea en horizontal, pero en pantalla angosta
+   nada lo indicaba: se veía cortada y parecía rota. */
+.table-hint{display:none}
+@media (max-width:860px){
+  .table-hint{display:flex;align-items:center;gap:.45rem;margin-bottom:.7rem;
+    font-size:.8rem;font-weight:600;color:var(--t3)}
+  .table-hint svg{width:15px;height:15px;color:var(--b3);
+    animation:hintNudge 1.9s var(--e) infinite}
+  @keyframes hintNudge{0%,100%{transform:translateX(0)}55%{transform:translateX(4px)}}
+  /* El degradado del borde se apaga al llegar al final del recorrido */
+  .table-wrap{mask-image:linear-gradient(90deg,#000 86%,rgba(0,0,0,.15));
+    -webkit-mask-image:linear-gradient(90deg,#000 86%,rgba(0,0,0,.15));
+    transition:mask-image .3s}
+  .table-wrap.at-end{mask-image:none;-webkit-mask-image:none}
+}
+
+/* El reloj sin los ":" dejaba ocho dígitos seguidos que se leían como un
+   solo número. La separación entre unidades vuelve a agruparlos. */
+@media (max-width:620px){
+  .clock{gap:1.15rem}
+}
+
+/* La caja del mapa era más alta que el mapa dibujado y dejaba aire muerto */
+@media (max-width:1080px){
+  .cover__map{aspect-ratio:1.22;max-width:460px}
+}
+@media (max-width:620px){
+  /* En dos filas quedaban 2+1 y se veía desbalanceado */
+  .cover__stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;text-align:center}
+  .cover__stats b{font-size:1.5rem}
+  .cover__stats span{font-size:.74rem}
+  .cover__map{aspect-ratio:1.06}
+}

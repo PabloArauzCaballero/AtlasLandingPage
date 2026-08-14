@@ -298,7 +298,7 @@
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.position.z = w < 620 ? 18 : 15;
+    camera.position.z = w < 620 ? 15.5 : 15;
     camera.updateProjectionMatrix();
   }
   resize();

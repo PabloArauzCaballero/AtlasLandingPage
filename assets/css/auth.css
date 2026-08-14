@@ -185,7 +185,7 @@
    cambia el tamaño y de dónde salen --rx/--ry (del puntero, no de un
    vaivén). La transición va sobre las variables, así el giro, el reflejo,
    el canto y la sombra se mueven juntos. */
-.acard--live{width:min(100%,340px);border-radius:19px;padding:1.3rem 1.4rem;gap:.4rem;
+.acard--live{width:min(100%,340px);border-radius:13px;padding:1.3rem 1.4rem;gap:.4rem;
   transition:--rx .5s var(--glide),--ry .5s var(--glide)}
 .acard--live .acard__top{font-size:1rem;gap:.5rem}
 .acard--live .acard__chip{width:44px;height:32px;border-radius:6px;margin-top:.5rem}

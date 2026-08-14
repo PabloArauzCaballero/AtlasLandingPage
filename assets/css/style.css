@@ -1252,7 +1252,7 @@ table{border-collapse:collapse;width:100%}
 @property --ry{syntax:'<number>';inherits:true;initial-value:0}
 
 .acard{--rx:0;--ry:0;
-  position:relative;width:206px;aspect-ratio:1.585;border-radius:15px;overflow:hidden;
+  position:relative;width:206px;aspect-ratio:1.585;border-radius:8px;overflow:hidden;
   padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;isolation:isolate;
   background:linear-gradient(146deg,var(--navy) 4%,var(--b1) 52%,var(--b2) 96%);
   transform:perspective(1000px) rotateY(calc(var(--rx) * 20deg)) rotateX(calc(var(--ry) * -13deg));
@@ -1272,21 +1272,31 @@ table{border-collapse:collapse;width:100%}
 /* Reflejo especular: se desplaza al contrario de la inclinación */
 .acard::before{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
   mix-blend-mode:screen;
-  background:radial-gradient(72% 58% at calc(50% - var(--rx) * 46%) calc(24% - var(--ry) * 40%),
-    rgba(255,255,255,.26),rgba(255,255,255,.04) 40%,transparent 66%)}
+  background:
+    /* Punto especular, chico y definido */
+    radial-gradient(56% 44% at calc(50% - var(--rx) * 46%) calc(22% - var(--ry) * 38%),
+      rgba(255,255,255,.3),rgba(255,255,255,.05) 42%,transparent 64%),
+    /* Reflejo del ambiente: banda ancha que viaja con la inclinación */
+    linear-gradient(calc(115deg + var(--rx) * 14deg),
+      transparent calc(18% - var(--rx) * 16%),
+      rgba(255,255,255,.11) calc(38% - var(--rx) * 16%),
+      rgba(255,255,255,.02) calc(56% - var(--rx) * 16%),
+      transparent calc(74% - var(--rx) * 16%))}
 
 /* Grano: una superficie perfectamente lisa delata que es un dibujo */
 .acard::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
-  opacity:.13;mix-blend-mode:overlay;
+  opacity:.11;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* Banda de reflejo, atada a la inclinación en vez de un barrido en bucle */
 .fo--card .acard{animation:cardSway 13s ease-in-out infinite}
 @keyframes cardSway{0%,100%{--rx:-.6;--ry:.34}50%{--rx:.6;--ry:-.24}}
-.acard__weave{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+.acard__weave{position:absolute;inset:0;z-index:1;pointer-events:none;
   background-image:
-    repeating-linear-gradient(58deg,rgba(255,255,255,.045) 0 1px,transparent 1px 9px),
-    repeating-linear-gradient(-58deg,rgba(0,0,0,.05) 0 1px,transparent 1px 13px)}
+    /* Viñeta: todo objeto fotografiado pierde luz hacia los bordes */
+    radial-gradient(125% 135% at 50% 44%,transparent 56%,rgba(0,0,0,.22) 100%),
+    repeating-linear-gradient(58deg,rgba(255,255,255,.022) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(-58deg,rgba(0,0,0,.025) 0 1px,transparent 1px 13px)}
 .acard__shine{position:absolute;inset:-25%;z-index:2;pointer-events:none;
   background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.1) 48%,transparent 58%);
   translate:calc(var(--rx) * 30%) 0}
@@ -1304,8 +1314,8 @@ table{border-collapse:collapse;width:100%}
   background:rgba(0,0,0,.32)}
 
 .acard__no{position:relative;z-index:1;margin-top:auto;font-family:var(--display);
-  font-weight:700;font-size:.8rem;letter-spacing:.06em;color:rgba(255,255,255,.92);
-  text-shadow:0 1px 1px rgba(0,0,0,.4)}
+  font-weight:700;font-size:.8rem;letter-spacing:.06em;color:rgba(255,255,255,.9);
+  text-shadow:0 -1px 0 rgba(255,255,255,.3),0 1px 1px rgba(0,0,0,.55)}
 .acard__bot{position:relative;z-index:1;display:flex;justify-content:space-between;
   align-items:center;gap:.8rem;font-size:.6rem;letter-spacing:.1em;
   color:rgba(255,255,255,.72);text-shadow:0 1px 1px rgba(0,0,0,.35)}

@@ -276,6 +276,12 @@ La regla es una sola: **el giro y la luz salen de la misma variable.**
 `@property` es lo que permite interpolar esas variables, así que sirven tanto para un vaivén
 con `@keyframes` como para seguir al puntero desde JS.
 
+**Si el objeto existe en la realidad, copia sus medidas.** Una tarjeta ISO 7810 mide
+85,6 × 53,98 mm con un radio de esquina de 3,18 mm: proporción **1.586** y radio **3,7% del
+ancho**. Al doble de redondeo se lee como una tarjeta de interfaz, no como una tarjeta de
+pago — y es un error que se ve aunque nadie sepa nombrarlo. Lo mismo vale para teléfonos,
+pantallas y envases: búscalo, no lo estimes.
+
 Lo demás que hace falta, por orden de impacto:
 
 1. **Canto.** Sin grosor visible la cara se lee como un rectángulo dibujado.
@@ -284,9 +290,17 @@ Lo demás que hace falta, por orden de impacto:
 3. **Grano.** Una superficie perfectamente lisa delata que es un dibujo. Un ruido al 13% en
    `mix-blend-mode:overlay` alcanza.
 4. **Textura de superficie.** Un patrón muy tenue rompe el degradado plano.
-5. **Fuera el barrido de brillo en bucle.** Esa banda diagonal que cruza sola cada pocos
+5. **Reflejo del ambiente**, no solo un punto especular. Una banda ancha y suave que viaja con
+   la inclinación, como la de una ventana. Un brillo puntual sobre color plano no alcanza.
+6. **Viñeta.** Todo objeto fotografiado pierde luz hacia los bordes.
+7. **Relieve en el texto**: luz arriba, sombra abajo. Plano se ve impreso sobre un rectángulo;
+   en relieve, grabado en un objeto.
+8. **Fuera el barrido de brillo en bucle.** Esa banda diagonal que cruza sola cada pocos
    segundos es el efecto que más grita "plantilla". Si hay reflejo, que dependa de la
    inclinación o del puntero.
+
+> Cuidado al apilar capas: el grano y la viñeta necesitan intensidades **muy** distintas. Si
+> comparten un mismo `opacity`, la superficie termina polvorienta.
 
 ### Datos geográficos
 
@@ -491,6 +505,7 @@ Todos aparecieron en un proyecto real y todos costaron tiempo. Léelos antes de 
 | Se ve pixelado | Tres causas distintas y suelen darse juntas: contorno de baja resolución, borde dibujado con puntos, y renderizar por debajo del `devicePixelRatio` dejando que el navegador escale |
 | Todo se ve neón y plano | Blending aditivo y falta de luz direccional |
 | Un objeto que gira se ve como una calcomanía | La luz está horneada en el fondo y no se mueve con el giro (ver §5) |
+| Un objeto real "no se siente real" y no sabes por qué | Revisa sus proporciones y radios contra el objeto físico. El redondeo de más es el error más frecuente |
 | El 3D nunca arranca | Sondeo de capacidades demasiado temprano (ver §7) |
 
 ### Layout

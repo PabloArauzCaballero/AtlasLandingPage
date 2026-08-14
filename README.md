@@ -12,8 +12,9 @@ Landing page estática para **Atlas**, plataforma boliviana de microcréditos /
 la red son las fuentes de Google, con fallback al sistema).
 
 La única dependencia es **Three.js**, y está vendorizada en `assets/js/vendor/` — no se
-llama a ningún CDN. Se carga con `defer` y sirve solo para el globo decorativo del hero:
-si no llega, no hay WebGL o el equipo pide menos movimiento, el hero se ve igual sin él.
+llama a ningún CDN. Se carga con `defer` y sirve solo para el mapa decorativo de la sección
+Cobertura: si no llega, no hay WebGL o el equipo pide menos movimiento, la sección se ve
+igual sin él.
 
 ```
 .
@@ -32,12 +33,12 @@ si no llega, no hay WebGL o el equipo pide menos movimiento, el hero se ve igual
 │   │   ├── preview.css    ← panel de previsualización (TEMPORAL)
 │   │   └── compare.css    ← portada y barra de conceptos (TEMPORAL)
 │   ├── js/
-│   │   ├── main.js        ← animaciones e interacciones (vanilla)
+│   │   ├── main.js        ← animaciones, motion y interacciones (vanilla)
 │   │   ├── mapa3d.js      ← mapa WebGL de Bolivia
 │   │   ├── geo-bolivia.js ← contorno del país y ciudades
-│   │   └── vendor/        ← Three.js (única dependencia, sin CDN)
 │   │   ├── auth.js        ← validación de login y registro
-│   │   └── preview.js     ← panel de previsualización (TEMPORAL)
+│   │   ├── preview.js     ← panel de previsualización (TEMPORAL)
+│   │   └── vendor/        ← Three.js (única dependencia, sin CDN)
 │   └── img/
 │       ├── logo-a.svg     ← concepto A · monograma
 │       ├── logo-b.svg     ← concepto B · orbe
@@ -83,7 +84,8 @@ pasos de la sección de abajo.
 1. **Loader** con contador 0→100 y cortina de salida
 2. **Hero** — escena 3D en CSS: el mockup de la app rodeado de objetos que flotan a distinta
    profundidad real (tarjeta Atlas, moneda, sello de 0%, una compra al fondo). El mouse
-   inclina la escena y desplaza cada objeto según su distancia
+   inclina la escena y desplaza cada objeto según su distancia, y el conjunto se aleja
+   al hacer scroll
 3. **Ticker** de categorías de comercios
 4. **Tour** — la pieza central: el teléfono queda fijo y **cambia de pantalla mientras haces scroll**
    por los 4 pasos (registro → cupo aprobado → pago con QR → plan de pago)

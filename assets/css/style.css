@@ -60,7 +60,24 @@
   --r-lg:28px;
   --r-xl:40px;
 
-  /* ── Motion ── */
+  /* ── Motion ──
+     Curvas de resorte reales, no cubic-bezier: linear() muestrea la
+     oscilación amortiguada, que es lo que da el asentamiento de iOS.
+       --spring  entradas: llega, se pasa apenas y se acomoda
+       --pop     micro-interacciones: rebote corto al tocar
+       --glide   recorridos largos, sin rebote                          */
+  --spring:linear(0,.006,.025 2.8%,.101 6.1%,.539 18.9%,.721 25.3%,.849 31.5%,
+    .937 38.1%,.968 41.8%,.991 45.7%,1.006 50.1%,1.015 55%,1.017 63.9%,1.001 100%);
+  --pop:linear(0,.009,.035 2.1%,.141,.281 6.7%,.723 12.9%,.938 16.7%,1.017,
+    1.077 21%,1.121,1.149 26.6%,1.155,1.153 30.8%,1.129 33.8%,1.052 40%,
+    1.007 44.4%,.981 50.7%,.98 59.4%,1.002 78.5%,1);
+  --glide:cubic-bezier(.32,.72,0,1);
+
+  /* Duraciones: una sola escala para todo el sitio */
+  --t-fast:.28s;
+  --t-base:.55s;
+  --t-slow:.9s;
+
   --e:cubic-bezier(.22,1,.36,1);
   --e2:cubic-bezier(.16,1,.3,1);
 
@@ -185,7 +202,8 @@ table{border-collapse:collapse;width:100%}
 .nav__menu{position:relative;display:flex;align-items:center;gap:.35rem}
 .nav__pill{position:absolute;top:50%;left:0;height:34px;border-radius:99px;
   background:rgba(255,255,255,.07);transform:translate(var(--x,0),-50%);width:var(--w,0);
-  opacity:0;transition:transform .42s var(--e),width .42s var(--e),opacity .3s;pointer-events:none}
+  opacity:0;transition:transform var(--t-base) var(--spring),width var(--t-base) var(--spring),
+    opacity var(--t-fast) var(--glide);pointer-events:none}
 .nav__menu:hover .nav__pill{opacity:1}
 .nav__link{position:relative;padding:.5rem .7rem;border-radius:99px;font-size:.9rem;
   font-weight:600;color:var(--t2);white-space:nowrap;transition:color .25s}
@@ -206,7 +224,8 @@ table{border-collapse:collapse;width:100%}
 .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
   font-weight:700;font-size:.94rem;padding:.8rem 1.6rem;border-radius:99px;overflow:hidden;
   isolation:isolate;white-space:nowrap;
-  transition:transform .4s var(--e),box-shadow .4s var(--e),border-color .3s,background .3s}
+  transition:transform var(--t-base) var(--pop),box-shadow var(--t-base) var(--glide),
+    border-color var(--t-fast) var(--glide),background var(--t-fast) var(--glide)}
 .btn svg{width:18px;height:18px;flex:none}
 .btn--sm{padding:.58rem 1.15rem;font-size:.87rem}
 .btn--lg{padding:1.02rem 2rem;font-size:1rem}
@@ -222,7 +241,7 @@ table{border-collapse:collapse;width:100%}
 .btn--line{border:1px solid var(--line-2);background:var(--ink);color:var(--t1)}
 .btn--line:hover{transform:translateY(-3px);border-color:rgba(var(--b2-rgb),.6);
   background:rgba(var(--b2-rgb),.12);box-shadow:0 20px 50px -24px rgba(var(--b2-rgb),.7)}
-.btn:active{transform:translateY(-1px) scale(.985)}
+.btn:active{transform:translateY(-1px) scale(.96);transition-duration:.1s}
 
 /* ═══════════ HERO ═══════════ */
 .hero{position:relative;z-index:2;padding:clamp(130px,17vh,190px) 0 0;overflow:hidden}
@@ -393,7 +412,7 @@ table{border-collapse:collapse;width:100%}
 
 .scr{position:absolute;inset:0;padding:52px 15px 15px;display:flex;flex-direction:column;gap:.55rem;
   opacity:0;transform:translateY(18px) scale(.97);pointer-events:none;
-  transition:opacity .55s var(--e),transform .55s var(--e)}
+  transition:opacity var(--t-base) var(--glide),transform var(--t-slow) var(--spring)}
 .scr.is-on{opacity:1;transform:none}
 .scr .ui__btn{margin-top:auto}
 .scr__title{font-family:var(--display);font-weight:700;font-size:.9rem;letter-spacing:-.02em}
@@ -485,7 +504,7 @@ table{border-collapse:collapse;width:100%}
 .presets{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
 .preset{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.75rem .35rem;
   border-radius:15px;border:1px solid var(--line);background:var(--ink);color:var(--t2);
-  transition:.3s var(--e)}
+  transition:var(--t-base) var(--pop)}
 .preset svg{width:20px;height:20px}
 .preset span{font-size:.72rem;font-weight:700}
 .preset em{font-style:normal;font-size:.66rem;color:var(--t3)}
@@ -515,7 +534,7 @@ table{border-collapse:collapse;width:100%}
 .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
 .chip{display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:.6rem .3rem;
   border-radius:14px;border:1px solid var(--line);background:var(--ink);color:var(--t2);
-  font-size:.78rem;font-weight:700;transition:.3s var(--e)}
+  font-size:.78rem;font-weight:700;transition:var(--t-base) var(--pop)}
 .chip b{font-family:var(--display);font-size:.72rem;color:var(--t3);letter-spacing:.06em}
 .chip:hover{transform:translateY(-3px);border-color:rgba(var(--b2-rgb),.5);color:var(--t1)}
 .chip.on{background:var(--g);color:var(--on-brand);border-color:transparent;
@@ -561,11 +580,11 @@ table{border-collapse:collapse;width:100%}
 .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
 .cell{position:relative;padding:clamp(1.3rem,2.4vw,1.9rem);border-radius:var(--r-lg);overflow:hidden;
   background:var(--ink);border:1px solid var(--line);display:flex;flex-direction:column;gap:.7rem;
-  transition:border-color .35s,transform .5s var(--e)}
+  transition:border-color var(--t-fast) var(--glide),transform var(--t-base) var(--spring)}
 .cell::before{content:'';position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s;
   background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(var(--b2-rgb),.16),transparent 65%)}
 .cell:hover::before{opacity:1}
-.cell:hover{border-color:rgba(var(--b2-rgb),.4);transform:translateY(-4px)}
+.cell:hover{border-color:rgba(var(--b2-rgb),.4);transform:translateY(-6px)}
 .cell h3{font-family:var(--display);font-size:var(--fs-h3);font-weight:700;letter-spacing:-.025em}
 .cell p{color:var(--t2);font-size:.92rem}
 .cell__body{flex:1}
@@ -696,7 +715,8 @@ table{border-collapse:collapse;width:100%}
 .cat{display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:1.5rem .7rem;
   border-radius:var(--r);text-align:center;font-size:.86rem;font-weight:600;color:var(--t2);
   background:var(--ink);border:1px solid var(--line);
-  transition:transform .4s var(--e),border-color .35s,color .35s,background .35s}
+  transition:transform var(--t-base) var(--spring),border-color var(--t-fast) var(--glide),
+    color var(--t-fast) var(--glide),background var(--t-fast) var(--glide)}
 .cat:hover{transform:translateY(-6px);border-color:rgba(var(--b2-rgb),.42);color:var(--t1);
   background:rgba(var(--b2-rgb),.08)}
 .cat__ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
@@ -960,10 +980,15 @@ table{border-collapse:collapse;width:100%}
   stroke-dashoffset:var(--o,151);transition:stroke-dashoffset .12s linear}
 
 /* ═══════════ REVEAL ═══════════ */
-[data-anim]{opacity:0;transition:opacity .9s var(--e2) var(--d,0ms),transform .9s var(--e2) var(--d,0ms)}
-[data-anim="rise"]{transform:translateY(38px)}
-[data-anim="fade"]{transform:translateY(16px)}
-[data-anim].in{opacity:1;transform:none}
+[data-anim]{opacity:0;
+  transition:opacity var(--t-slow) var(--glide) var(--d,0ms),
+             transform var(--t-slow) var(--spring) var(--d,0ms),
+             filter var(--t-slow) var(--glide) var(--d,0ms)}
+[data-anim="rise"]{transform:translateY(34px) scale(.975);filter:blur(9px)}
+[data-anim="fade"]{transform:translateY(14px);filter:blur(6px)}
+[data-anim="tilt3d"]{transform-origin:50% 100%;
+  transform:perspective(1200px) rotateX(22deg) translateY(42px) scale(.95)}
+[data-anim].in{opacity:1;transform:none;filter:blur(0)}
 
 /* ═══════════ RESPONSIVE ═══════════ */
 @media (max-width:1080px){
@@ -1334,3 +1359,32 @@ table{border-collapse:collapse;width:100%}
   .cover__map{max-width:560px;margin-inline:auto}
 }
 
+
+/* ── Movimiento ligado al scroll ────────────────────────────────────
+   --sp lo escribe main.js: 0 cuando la sección entra, 1 cuando sale.
+   Aquí solo se traduce a transformaciones, así el navegador puede
+   componerlas sin pasar por layout. */
+.tour__sticky,.hero__stage{--sp:.5}
+
+/* El teléfono del tour se examina: gira apenas mientras recorres los pasos */
+.device--tour{
+  transform:perspective(1300px)
+            rotateY(calc((var(--sp) - .5) * 17deg))
+            rotateX(calc((var(--sp) - .5) * -7deg))
+            scale(calc(.965 + var(--sp) * .05));
+  transform-style:preserve-3d}
+
+/* El hero se aleja un poco al salir: da profundidad sin robar atención */
+.hero__stage{
+  transform:translateY(calc(var(--sp) * -26px)) scale(calc(1.02 - var(--sp) * .05));
+  transform-origin:50% 30%}
+/* Mientras entra en pantalla manda la animación de revelado, no el scroll */
+.hero__stage[data-anim]:not(.in){transform:translateY(34px) scale(.975)}
+
+@media (max-width:1080px){
+  .device--tour{transform:none}
+  .hero__stage{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .device--tour,.hero__stage{transform:none}
+}

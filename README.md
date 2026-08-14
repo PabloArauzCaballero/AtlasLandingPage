@@ -230,6 +230,38 @@ Las dos páginas llevan `noindex`: no tiene sentido que Google indexe un login.
 Conectar en `main.js` (bloque 12, marcado con `TODO`) al backend, CRM o un servicio tipo
 Formspree / Mailchimp.
 
+## Sistema de motion
+
+El movimiento sigue una sola gramática, al estilo de las interfaces de Apple. Los tokens
+están en el `:root` de `style.css`:
+
+```css
+--spring   /* entradas: llega, se pasa apenas y se acomoda */
+--pop      /* micro-interacciones: rebote corto al tocar   */
+--glide    /* recorridos largos, sin rebote                */
+--t-fast / --t-base / --t-slow
+```
+
+`--spring` y `--pop` son **curvas de resorte reales**, no cubic-bezier: la función `linear()`
+muestrea una oscilación amortiguada, que es lo que produce el asentamiento característico de
+iOS. Con una cubic-bezier el pulsado se siente de goma.
+
+Tres cosas más definen el carácter:
+
+- **Las entradas salen de un desenfoque** (`filter: blur()` → 0) además de subir y escalar. Sin
+  eso la entrada se siente mecánica por más resorte que se le ponga. No se aplica a las grillas
+  del bento: cubren mucha superficie y el desenfoque es lo más caro de animar.
+- **Movimiento ligado al scroll, continuo.** `main.js` escribe `--sp` (0 cuando la sección
+  entra, 1 cuando sale) en `.tour__sticky` y `.hero__stage`, y el CSS lo traduce a
+  transformaciones. El teléfono del tour gira mientras recorres los pasos, como si lo
+  examinaras. El valor se suaviza con un lerp por cuadro: escribirlo directo desde el evento
+  de scroll se siente escalonado.
+- **La visibilidad se deduce del propio rect**, no de un observer, para que ninguna sección se
+  quede sin actualizar cuando el scroll es instantáneo.
+
+Todo se apaga con `prefers-reduced-motion` y las transformaciones ligadas al scroll no corren
+por debajo de 1080px.
+
 ## Detalles técnicos
 
 - Un solo listener de `scroll` con throttle por `requestAnimationFrame`

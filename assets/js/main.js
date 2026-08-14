@@ -223,6 +223,62 @@
   }
 
   /* ─────────────────────────────────────────────────────────────────
+     7b · Movimiento ligado al scroll, continuo
+     El paso activo cambia de golpe, pero el teléfono no: gira y escala
+     de forma continua según cuánto llevas recorrido de la sección. El
+     valor se suaviza con un lerp en cada cuadro; escribirlo directo
+     desde el evento de scroll se siente escalonado.
+     ───────────────────────────────────────────────────────────────── */
+  (function scrollLinked() {
+    if (SOFT) return;
+
+    const targets = [
+      { el: $('.tour__sticky'), sec: $('#tour') },
+      { el: $('.hero__stage'),  sec: $('#hero') }
+    ].filter((t) => t.el && t.sec);
+    if (!targets.length) return;
+
+    targets.forEach((t) => { t.now = 0.5; t.to = 0.5; t.live = false; });
+
+    // La visibilidad se deduce del propio rect: depender de un observer
+    // dejaba secciones sin actualizar cuando el scroll era instantáneo.
+    function measure() {
+      let any = false;
+      for (const t of targets) {
+        const r = t.sec.getBoundingClientRect();
+        t.live = r.bottom > -200 && r.top < innerHeight + 200;
+        if (!t.live) continue;
+        any = true;
+        // 0 cuando la sección entra por abajo, 1 cuando termina de salir
+        t.to = clamp((innerHeight - r.top) / (innerHeight + r.height), 0, 1);
+      }
+      return any;
+    }
+
+    let loop = null;
+    function tick() {
+      let go = false;
+      for (const t of targets) {
+        if (!t.live) continue;
+        t.now += (t.to - t.now) * 0.09;
+        t.el.style.setProperty('--sp', t.now.toFixed(4));
+        if (Math.abs(t.to - t.now) > 0.0004) go = true;
+      }
+      loop = go ? requestAnimationFrame(tick) : null;
+    }
+
+    function refresh() {
+      measure();
+      if (loop === null) tick();
+    }
+
+    addEventListener('scroll', refresh, { passive: true });
+    addEventListener('resize', refresh);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+    refresh();
+  })();
+
+  /* ─────────────────────────────────────────────────────────────────
      8 · Todo lo que depende del scroll (un solo listener + rAF)
      ───────────────────────────────────────────────────────────────── */
   const upBtn = $('#up');

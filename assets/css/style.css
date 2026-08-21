@@ -1004,9 +1004,35 @@ table{border-collapse:collapse;width:100%}
   .hover-card--a{left:-16%}.hover-card--b{right:-14%}
 
   .tour__grid{grid-template-columns:1fr}
-  .tour__sticky{position:sticky;top:80px;margin-bottom:1.5rem;
-    padding:1rem 0;background:linear-gradient(var(--bg) 72%,transparent);z-index:3}
-  .device--tour{width:min(230px,62vw)}
+  /* El pill sube: pegado al nav se lee como cabecera del bloque fijo, y deja
+     de caer justo encima del parrafo del paso. */
+  .tour__sticky{position:sticky;top:72px;margin-bottom:1.2rem;z-index:3;
+    flex-direction:column-reverse;gap:.9rem;padding:.85rem 0 1rem;background:none}
+  /* Telon opaco de ancho completo. El degradado anterior solo cubria el 72%
+     de la caja: el texto de los pasos seguia subiendo por detras de la mitad
+     inferior del telefono y atravesaba el pill. */
+  .tour__sticky::before,.tour__sticky::after{content:'';position:absolute;z-index:-1;
+    left:50%;width:100vw;translate:-50% 0;pointer-events:none}
+  /* El borde de arriba se desvanece: un corte recto dejaba una linea visible
+     por donde el texto desaparecia de golpe. */
+  .tour__sticky::before{top:-34px;bottom:0;background:linear-gradient(transparent,var(--bg) 34px)}
+  .tour__sticky::after{top:100%;height:40px;background:linear-gradient(var(--bg),transparent)}
+  /* Alto disponible manda sobre el ancho: en pantallas cortas el telefono se
+     encoge en vez de comerse el sitio del texto. */
+  /* Las pantallas estan dibujadas para los 320px de ancho del telefono de
+     escritorio. Aqui el telefono es mas angosto pero el contenido seguia a
+     tamano real, asi que el ultimo bloque de cada pantalla se cortaba: se
+     escala entero por la razon entre ambos anchos y vuelve a caber igual. */
+  .device--tour{--dw:max(160px,min(230px,62vw,calc((100dvh - 300px) * .52)));width:var(--dw);
+    --k:tan(atan2(calc(var(--dw) - 20px),320px))}
+  /* La isla acompana a la escala: si se queda a tamano real se come el
+     titulo de la pantalla, que ahora empieza mas arriba. */
+  .device--tour .device__island{top:calc(20px * var(--k));width:calc(86px * var(--k));
+    height:calc(22px * var(--k))}
+  .device--tour .scr{width:calc(100% / var(--k));height:calc(100% / var(--k));
+    transform-origin:top left;transform:scale(var(--k)) translateY(18px) scale(.97)}
+  .device--tour .scr.is-on{transform:scale(var(--k))}
+  .tour__now{background:var(--bg-2)}
   .tour__steps{margin-left:1.7rem}
   /* El riel se queda continuo tambien aqui: recortarlo a la caja del texto
      era justo lo que dejaba los huecos entre pasos vacios. */

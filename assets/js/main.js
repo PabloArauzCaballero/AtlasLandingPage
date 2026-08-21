@@ -215,7 +215,13 @@
         if (r.isIntersecting && (!best || r.intersectionRatio > best.intersectionRatio)) best = r;
       });
       if (best) setScreen(Number(best.target.dataset.step));
-    }, { threshold: [0.4, 0.6, 0.8], rootMargin: '-25% 0px -25% 0px' });
+      // Debajo de 1080 el teléfono fijo ocupa la mitad de arriba: la banda que
+      // decide el paso activo tiene que caer en la franja que queda libre,
+      // si no el pill sigue anunciando el paso anterior al que estás leyendo.
+    }, {
+      threshold: [0.4, 0.6, 0.8],
+      rootMargin: innerWidth <= 1080 ? '-58% 0px -8% 0px' : '-25% 0px -25% 0px'
+    });
     steps.forEach((s) => sio.observe(s));
     steps[0].classList.add('on');
   } else {

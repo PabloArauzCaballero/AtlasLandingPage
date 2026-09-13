@@ -133,7 +133,7 @@
       <a href="registro.html?c=b" class="btn btn--primary btn--sm nav__cta" data-magnetic><span>Crear cuenta</span></a>
     </nav>
 
-    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
+    <button type="button" class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
       <span></span><span></span>
     </button>
   </div>
@@ -453,19 +453,19 @@
       <div class="calc__left">
         <p class="calc__mini">Compras frecuentes</p>
         <div class="presets">
-          <button class="preset" data-amount="840">
+          <button type="button" class="preset" data-amount="840">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
             <span>Celular</span><em>Bs 840</em>
           </button>
-          <button class="preset" data-amount="2660">
+          <button type="button" class="preset" data-amount="2660">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M5 9h14M9 5.5h1M9 13h1"/></svg>
             <span>Nevera</span><em>Bs 2.660</em>
           </button>
-          <button class="preset" data-amount="520">
+          <button type="button" class="preset" data-amount="520">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 3h2l2.5 12h11L21 7H6"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
             <span>Mercado</span><em>Bs 520</em>
           </button>
-          <button class="preset" data-amount="6300">
+          <button type="button" class="preset" data-amount="6300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M9 17h6l-2-7h-4l1 3M13 10l2-4h2"/></svg>
             <span>Moto</span><em>Bs 6.300</em>
           </button>
@@ -479,10 +479,17 @@
 
         <p class="calc__mini calc__mini--mt">Tu nivel Atlas</p>
         <div class="chips" role="radiogroup" aria-label="Nivel Atlas">
-          <button class="chip" role="radio" aria-checked="false" data-initial="0.6"><b>N1</b>60%</button>
-          <button class="chip" role="radio" aria-checked="false" data-initial="0.5"><b>N2</b>50%</button>
-          <button class="chip on" role="radio" aria-checked="true" data-initial="0.4"><b>N3</b>40%</button>
-          <button class="chip" role="radio" aria-checked="false" data-initial="0.3"><b>N4</b>30%</button>
+          <!-- Radiogrupo ARIA a propósito y no <input type="radio">: cada opción muestra el nivel y su
+               porcentaje con su propio estilo. Cumple el patrón completo (flechas y un único tabindex),
+               que es lo que pide la regla prefer-native-element. -->
+          <!-- [html-validate-disable-next prefer-native-element] -->
+          <button type="button" tabindex="-1" class="chip" role="radio" aria-checked="false" data-initial="0.6"><b>N1</b>60%</button>
+          <!-- [html-validate-disable-next prefer-native-element] -->
+          <button type="button" tabindex="-1" class="chip" role="radio" aria-checked="false" data-initial="0.5"><b>N2</b>50%</button>
+          <!-- [html-validate-disable-next prefer-native-element] -->
+          <button type="button" tabindex="0" class="chip on" role="radio" aria-checked="true" data-initial="0.4"><b>N3</b>40%</button>
+          <!-- [html-validate-disable-next prefer-native-element] -->
+          <button type="button" tabindex="-1" class="chip" role="radio" aria-checked="false" data-initial="0.3"><b>N4</b>30%</button>
         </div>
       </div>
 
@@ -858,7 +865,7 @@
     </header>
   </div>
 
-  <div class="rail" aria-label="Testimonios">
+  <div class="rail" role="group" aria-label="Testimonios">
     <div class="rail__row" data-dir="1">
       <figure class="quote"><p>Compré la nevera que necesitaba sin descuadrar el mes. Las cuotas caen justo después de cobrar.</p><figcaption><span>V</span><b>Valeria M.</b><em>Santa Cruz</em></figcaption></figure>
       <figure class="quote"><p>Lo que más me gustó fue ver el plan completo antes de aceptar. Nada de letra pequeña.</p><figcaption><span>J</span><b>José R.</b><em>La Paz</em></figcaption></figure>
@@ -1157,7 +1164,7 @@
   <div class="foot__word" aria-hidden="true">ATLAS</div>
 </footer>
 
-<button class="up" id="up" aria-label="Volver arriba">
+<button type="button" class="up" id="up" aria-label="Volver arriba">
   <svg class="up__ring" viewBox="0 0 52 52" aria-hidden="true">
     <circle cx="26" cy="26" r="24"/><circle cx="26" cy="26" r="24" id="upRing"/>
   </svg>

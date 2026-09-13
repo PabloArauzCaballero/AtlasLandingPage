@@ -492,9 +492,11 @@
 
     chips.forEach((chip, i) => {
       chip.addEventListener('click', () => {
-        chips.forEach((c) => { c.classList.remove('on'); c.setAttribute('aria-checked', 'false'); });
+        chips.forEach((c) => { c.classList.remove('on'); c.setAttribute('aria-checked', 'false'); c.tabIndex = -1; });
         chip.classList.add('on');
         chip.setAttribute('aria-checked', 'true');
+        // Tabindex rotativo: el grupo es UNA parada de Tab y las flechas se mueven dentro.
+        chip.tabIndex = 0;
         pct = Number(chip.dataset.initial);
         render();
       });

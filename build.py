@@ -64,8 +64,7 @@ def build_one(src: str, slug: str, letter: str, name: str) -> str:
 
     # 2 · El concepto queda fijo en toda la página
     h = h.replace('<use href="#markA"/>', f'<use href="#mark{letter}"/>')
-    h = h.replace('href="assets/img/logo-a.svg" type="image/svg+xml" id="favicon"',
-                  f'href="assets/img/logo-{slug}.svg" type="image/svg+xml"')
+    # El favicon no se toca: es el logo de la app en todas las versiones.
     h = h.replace('<meta property="og:image" content="assets/img/logo-a.svg">',
                   f'<meta property="og:image" content="assets/img/logo-{slug}.svg">')
     h = h.replace('<title>Atlas — Compra ahora, paga después | Crédito instantáneo</title>',
@@ -158,7 +157,9 @@ def build_compare(src: str) -> str:
 <meta name="theme-color" content="#061426">
 <title>Atlas · Los 3 conceptos de marca</title>
 <meta name="description" content="Las tres rutas de identidad de Atlas, cada una aplicada a la landing completa.">
-<link rel="icon" href="assets/img/logo-a.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="assets/img/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {fonts}

@@ -18,8 +18,6 @@
   let route   = saved.route   || 'blue';
   let open    = saved.open === true;   // arranca plegado para no tapar el sitio
 
-  const favicon = document.getElementById('favicon');
-
   function applyConcept(c) {
     concept = c;
     // Todas las marcas del sitio apuntan al mismo símbolo.
@@ -28,7 +26,6 @@
       if (u.closest('#preview')) return;
       u.setAttribute('href', '#mark' + c);
     });
-    if (favicon) favicon.href = 'assets/img/logo-' + c.toLowerCase() + '.svg';
     panel.querySelectorAll('[data-concept]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.concept === c));
     });

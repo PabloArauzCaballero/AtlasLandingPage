@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#061426">
 <title>Crear cuenta · Atlas</title>
-<meta name="description" content="Crea tu cuenta Atlas en 2 minutos y descubre tu cupo. Sin costo y sin compromiso.">
+<meta name="description" content="Vista previa del registro de Atlas. Esta pantalla todavía no crea cuentas.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="assets/img/icon-192.png" type="image/png">
@@ -103,8 +103,10 @@
 
     <div class="auth__box">
       <span class="auth__eyebrow">Crear cuenta</span>
-      <h1>Descubre tu cupo hoy</h1>
-      <p>Sin costo y sin compromiso. Solo necesitas tu cédula y un teléfono activo.</p>
+      <h1>Descubre tu cupo</h1>
+      <p class="auth__preview" role="note"><b>Vista previa.</b> Esta pantalla todavía no crea cuentas ni guarda
+         tus datos. El alta de verdad se hace en la app: ahí te pedimos tu cédula, una selfie en tres
+         poses y tus datos de contacto, domicilio y perfil financiero.</p>
 
       <ol class="steps">
         <li class="on"><b>1</b>Tus datos</li>
@@ -112,7 +114,7 @@
         <li><b>3</b>Tu cupo</li>
       </ol>
 
-      <form class="form" id="authForm" novalidate data-done="¡Cuenta creada! Te enviamos un código para verificar tu teléfono.">
+      <form class="form" id="authForm" novalidate data-done="Vista previa: no se creó ninguna cuenta ni se guardó nada. El registro se abre en la app con el lanzamiento.">
         <div class="field">
           <label for="name">Nombre y apellido</label>
           <div class="field__box">
@@ -170,12 +172,9 @@
           <p class="field__err"></p>
         </div>
 
-        <label class="check">
-          <input type="checkbox" id="terms"><i></i>
-          <span>Acepto los <a href="#">Términos y condiciones</a> y la
-          <a href="#">Política de privacidad</a> de Atlas, y el tratamiento de mis datos
-          para evaluar mi cupo.</span>
-        </label>
+        <p class="form__note">Los términos, la política de privacidad y el consentimiento para
+          tratar tus datos los lees y aceptas en la app, al crear tu cuenta. Esta vista previa no
+          pide ninguna aceptación porque no guarda nada.</p>
 
         <button type="submit" class="btn btn--primary btn--lg"><span>Crear mi cuenta</span></button>
         <p class="auth__msg" id="authMsg" role="status"></p>
@@ -184,7 +183,7 @@
       <p class="swap">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
     </div>
 
-    <p class="auth__legal">© <span id="year">2026</span> Atlas · Términos y Política de Privacidad</p>
+    <p class="auth__legal">© <span id="year">2026</span> Atlas · Vista previa de diseño: precios, plazos y condiciones son ilustrativos y no vinculantes.</p>
   </div>
 
   <aside class="auth__side">
@@ -200,7 +199,7 @@
           </div>
           <span class="acard__chip"></span>
           <div class="acard__no">•••• •••• •••• <b id="cardNo">••••</b></div>
-          <div class="acard__bot"><span id="cardName">TU NOMBRE</span><b id="cardLvl">NIVEL 1</b></div>
+          <div class="acard__bot"><span id="cardName">TU NOMBRE</span><b id="cardLvl">CLIENTE</b></div>
         </div>
       </div>
       <ul class="ready" id="ready">
@@ -212,14 +211,14 @@
       </ul>
 
     <ul class="side__list side__list--tight">
-      <li><i></i><div><b>Aprobación en menos de un minuto</b><span>Sin buró de crédito, sin aval y sin comprobante de ingresos.</span></div></li>
-            <li><i></i><div><b>Tu cupo crece contigo</b><span>Cada pago puntual te sube de nivel y te baja la inicial.</span></div></li>
+      <li><i></i><div><b>Evaluación de tu perfil</b><span>Sin buró de crédito y sin aval.</span></div></li>
+            <li><i></i><div><b>Condiciones antes de aceptar</b><span>Ves cuánto pagas hoy y cómo quedan tus cuotas antes de confirmar.</span></div></li>
     </ul>
 
     <div class="side__stats">
-      <div><b>Bs 0</b><span>Costo de apertura</span></div>
-      <div><b>0%</b><span>Intereses</span></div>
-      <div><b>2 min</b><span>En registrarte</span></div>
+      <div><b>60%</b><span>De inicial</span></div>
+      <div><b>QR</b><span>En la caja</span></div>
+      <div><b>App</b><span>Todo desde el celular</span></div>
     </div>
   </aside>
 </main>

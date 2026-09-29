@@ -104,9 +104,10 @@
     <div class="auth__box">
       <span class="auth__eyebrow">Iniciar sesión</span>
       <h1>Bienvenido de vuelta</h1>
-      <p>Entra para ver tu cupo, tus cuotas y pagar en un toque.</p>
+      <p class="auth__preview" role="note"><b>Vista previa.</b> Esta pantalla todavía no está conectada a
+         Atlas: no inicia sesión ni guarda datos. Tu cuenta se usa desde la app.</p>
 
-      <form class="form" id="authForm" novalidate data-done="¡Listo! Entrando a tu cuenta…">
+      <form class="form" id="authForm" novalidate data-done="Vista previa: no se inició ninguna sesión. Tu cuenta se usa desde la app de Atlas.">
         <div class="field">
           <label for="user">Correo o teléfono</label>
           <div class="field__box">
@@ -136,7 +137,7 @@
             <input type="checkbox" checked><i></i>
             <span>Mantener sesión iniciada</span>
           </label>
-          <a href="#">¿Olvidaste tu clave?</a>
+          <span class="form__soon">Recuperar clave: todavía no disponible</span>
         </div>
 
         <button type="submit" class="btn btn--primary btn--lg"><span>Entrar</span></button>
@@ -144,16 +145,16 @@
 
         <div class="sep">o</div>
 
-        <a href="#" class="btn btn--line btn--lg">
+        <button type="button" class="btn btn--line btn--lg" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>
-          <span>Recibir un código por SMS</span>
-        </a>
+          <span>Código por SMS · todavía no disponible</span>
+        </button>
       </form>
 
-      <p class="swap">¿Todavía no tienes cuenta? <a href="registro.html">Créala en 2 minutos</a></p>
+      <p class="swap">¿Todavía no tienes cuenta? <a href="registro.html">Mira el registro</a></p>
     </div>
 
-    <p class="auth__legal">© <span id="year">2026</span> Atlas · Términos y Política de Privacidad</p>
+    <p class="auth__legal">© <span id="year">2026</span> Atlas · Vista previa de diseño: precios, plazos y condiciones son ilustrativos y no vinculantes.</p>
   </div>
 
   <aside class="auth__side">
@@ -169,19 +170,19 @@
           </div>
           <span class="acard__chip"></span>
           <div class="acard__no">•••• •••• •••• <b id="cardNo">4821</b></div>
-          <div class="acard__bot"><span id="cardName">V. MÉNDEZ</span><b id="cardLvl">NIVEL 3</b></div>
+          <div class="acard__bot"><span id="cardName">V. MÉNDEZ</span><b id="cardLvl">CLIENTE</b></div>
         </div>
       </div>
 
-    <blockquote class="side__quote">
-      “Compré la nevera que necesitaba sin descuadrar el mes. Las cuotas caen justo después de cobrar.”
-      <div class="side__by"><span>V</span><div><b>Valeria M.</b><em>Nivel 3 · Santa Cruz</em></div></div>
-    </blockquote>
+    <div class="side__quote">
+      Antes de confirmar una compra ves cuánto pagas hoy y cómo quedan tus cuotas.
+      <div class="side__by"><span>A</span><div><b>Así funciona Atlas</b><em>Ejemplo ilustrativo, no es un testimonio</em></div></div>
+    </div>
 
     <div class="side__stats">
-      <div><b>0%</b><span>Intereses</span></div>
-      <div><b>3</b><span>Cuotas quincenales</span></div>
-      <div><b>500+</b><span>Comercios</span></div>
+      <div><b>60%</b><span>De inicial</span></div>
+      <div><b>QR</b><span>En la caja</span></div>
+      <div><b>App</b><span>Todo desde el celular</span></div>
     </div>
   </aside>
 </main>

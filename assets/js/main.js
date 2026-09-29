@@ -427,7 +427,12 @@
   }
 
   /* ─────────────────────────────────────────────────────────────────
-     10 · Calculadora
+     10 · Calculadora (simulación ilustrativa)
+     Sólo calcula lo que no depende de la evaluación: la inicial (el
+     porcentaje vive en data-initial de .calc) y lo que queda por
+     financiar. La tasa, el número de cuotas y sus fechas los decide la
+     evaluación de cada solicitud, así que aquí no se inventan: no hay
+     cuotas con monto ni fechas calculadas desde hoy.
      ───────────────────────────────────────────────────────────────── */
   (function calculator() {
     const slider = $('#amount');
@@ -437,40 +442,25 @@
     const donut   = $('#donut');
     const initOut = $('#initOut');
     const tl0     = $('#tl0');
-    const quotas  = $$('.timeline .q');
+    const finOut  = $('#finOut');
     const totalO  = $('#totalOut');
-    const chips   = $$('.chip');
     const presets = $$('.preset');
     const LEN     = 2 * Math.PI * 56;   // r = 56
-    const N       = 3;                  // número de cuotas
-    const EVERY   = 15;                 // días entre cuotas
+    const pct     = Number($('.calc')?.dataset.initial || '0.6');
 
     const money = (n) =>
       n.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    // Fechas reales de cada cuota, a partir de hoy
-    (function dates() {
-      const fmt = new Intl.DateTimeFormat('es-BO', { day: 'numeric', month: 'short' });
-      for (let i = 1; i <= N; i++) {
-        const d = new Date();
-        d.setDate(d.getDate() + EVERY * i);
-        const cell = $('#d' + i);
-        if (cell) cell.textContent = fmt.format(d).replace('.', '');
-      }
-    })();
-
-    let pct = 0.4;
-
     function render() {
       const amount  = Number(slider.value);
       const initial = amount * pct;
-      const quota   = (amount - initial) / N;
 
       out.textContent     = nf.format(amount);
-      initOut.textContent = money(initial);
+      // Sin decimales dentro del anillo: con céntimos, «1.020,00» se sale del círculo.
+      initOut.textContent = nf.format(Math.round(initial));
       tl0.textContent     = 'Bs ' + money(initial);
+      if (finOut) finOut.textContent = 'Bs ' + money(amount - initial);
       totalO.textContent  = money(amount);
-      quotas.forEach((q) => { q.textContent = 'Bs ' + money(quota); });
 
       slider.style.setProperty('--fill',
         ((amount - slider.min) / (slider.max - slider.min)) * 100 + '%');
@@ -487,27 +477,6 @@
       p.addEventListener('click', () => {
         slider.value = p.dataset.amount;
         render();
-      });
-    });
-
-    chips.forEach((chip, i) => {
-      chip.addEventListener('click', () => {
-        chips.forEach((c) => { c.classList.remove('on'); c.setAttribute('aria-checked', 'false'); c.tabIndex = -1; });
-        chip.classList.add('on');
-        chip.setAttribute('aria-checked', 'true');
-        // Tabindex rotativo: el grupo es UNA parada de Tab y las flechas se mueven dentro.
-        chip.tabIndex = 0;
-        pct = Number(chip.dataset.initial);
-        render();
-      });
-      // Flechas dentro del radiogroup
-      chip.addEventListener('keydown', (e) => {
-        if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(e.key)) return;
-        e.preventDefault();
-        const dir = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : -1;
-        const next = chips[(i + dir + chips.length) % chips.length];
-        next.focus();
-        next.click();
       });
     });
 
@@ -540,8 +509,14 @@
   });
 
   /* ─────────────────────────────────────────────────────────────────
-     12 · Formulario (demo, sin backend)
+     12 · Formulario (vista previa, sin backend)
+     No existe todavía un servicio de leads ni de lista de espera, así que
+     el formulario sale deshabilitado en el HTML y, si alguien lo envía
+     igual, el mensaje dice la verdad: no se guarda nada. Nunca confirmar
+     algo que no ocurre.
      ───────────────────────────────────────────────────────────────── */
+  const PREVIEW_ONLY = 'Vista previa: este formulario todavía no guarda correos. No te vamos a escribir.';
+
   $('#leadForm')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const input = $('#leadEmail');
@@ -549,11 +524,10 @@
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
 
     msg.classList.toggle('err', !ok);
-    msg.textContent = ok
-      ? '¡Listo! Te escribiremos para activar tu cupo. 🎉'
-      : 'Escribe un correo válido para continuar.';
+    msg.textContent = ok ? PREVIEW_ONLY : 'Escribe un correo válido para continuar.';
 
-    // TODO: conectar con el backend / CRM real de Atlas
+    // TODO: conectar con el backend / CRM real de Atlas cuando exista, y sólo entonces
+    // cambiar el mensaje por una confirmación.
     if (ok) e.target.reset(); else input.focus();
   });
 
@@ -641,10 +615,8 @@
       const msg = $('#waitMsg');
       const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim());
       msg.classList.toggle('err', !ok);
-      msg.textContent = ok
-        ? '¡Anotado! Te escribimos el día del lanzamiento. 🚀'
-        : 'Escribe un correo válido para anotarte.';
-      // TODO: conectar con la lista de espera real
+      msg.textContent = ok ? PREVIEW_ONLY : 'Escribe un correo válido.';
+      // TODO: conectar con la lista de espera real cuando exista, y sólo entonces confirmar.
       if (ok) e.target.reset(); else input.focus();
     });
   })();

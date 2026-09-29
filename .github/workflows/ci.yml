@@ -26,6 +26,19 @@ jobs:
       - name: Validar las páginas publicadas
         run: npx --yes html-validate@9 --formatter stylish index.html login.html registro.html
 
+  # Guardia de promesas (auditoría de calidad, 2026-09-29). La landing es pública: no puede
+  # afirmar lo que Atlas no hace (0 % de interés, cuotas quincenales, niveles, tiempos sin
+  # métrica, testimonios...) ni tener enlaces a ninguna parte. check.py dice archivo, línea
+  # y motivo; sin dependencias.
+  promesas:
+    name: Sin promesas inventadas ni enlaces muertos
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar textos y enlaces
+        run: python3 check.py
+
   # Escaneo de secretos del árbol (auditoría a producción, 2026-09-13). Este repositorio es
   # PÚBLICO: lo que entra en un commit queda indexado aunque se borre después. Corre antes de
   # instalar dependencias, así que sólo mira código de Atlas. Alcance: el árbol (`dir`), no el

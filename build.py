@@ -67,7 +67,7 @@ def build_one(src: str, slug: str, letter: str, name: str) -> str:
     # El favicon no se toca: es el logo de la app en todas las versiones.
     h = h.replace('<meta property="og:image" content="assets/img/logo-a.svg">',
                   f'<meta property="og:image" content="assets/img/logo-{slug}.svg">')
-    h = h.replace('<title>Atlas — Compra ahora, paga después | Crédito instantáneo</title>',
+    h = h.replace('<title>Atlas — Compra ahora, paga después | Crédito en cuotas</title>',
                   f'<title>Atlas · Concepto {letter} — {name}</title>')
 
     # 3 · Que login y registro hereden el concepto de la página de origen
@@ -192,8 +192,8 @@ def build_compare(src: str) -> str:
 
     <p class="cmp__note">
       Los tres usan la misma paleta y tipografía. Lo único que cambia es el símbolo, así que
-      la decisión es <b>solo de concepto</b>. Textos, cifras y testimonios del sitio todavía
-      son de ejemplo.
+      la decisión es <b>solo de concepto</b>. Textos, cifras y ejemplos del sitio todavía
+      son ilustrativos y no vinculantes.
     </p>
   </div>
 </main>

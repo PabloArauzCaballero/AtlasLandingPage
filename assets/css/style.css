@@ -1541,3 +1541,23 @@ table{border-collapse:collapse;width:100%}
   .device__body{box-shadow:0 22px 44px -22px rgba(0,0,0,.85),
     0 0 0 1px rgba(255,255,255,.09) inset}
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Vista previa honesta (2026-09-29)
+   Hasta el lanzamiento, lo verdadero es que precios, plazos y condiciones
+   son ilustrativos y que los formularios no guardan nada. Estas reglas
+   pintan esos avisos con el mismo sistema, sin romper la composición:
+   texto en --t2 (no --t3) porque es información que se tiene que leer.
+   ═══════════════════════════════════════════════════════════════════════ */
+.preview-note{color:var(--t2);font-size:.8rem;line-height:1.5;text-wrap:pretty}
+.hero__note{margin-top:1.1rem;max-width:46ch}
+.foot__notice{flex-basis:100%;padding-bottom:.4rem}
+.foot__soon{font-size:.88rem;color:var(--t2);max-width:30ch;text-wrap:pretty}
+.store--soon{cursor:default}
+.store--soon:hover{transform:none;border-color:var(--line-2);background:var(--ink)}
+.launch__msg--note,.closer__msg--note{color:var(--t2);font-weight:500}
+.btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none;transform:none}
+.launch__form input:disabled,.closer__form input:disabled{opacity:.6;cursor:not-allowed}
+@media (max-width:1080px){
+  .hero__note{margin-inline:auto}
+}

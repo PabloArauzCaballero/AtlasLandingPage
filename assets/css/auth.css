@@ -224,3 +224,11 @@
   .preview__lbl{text-align:center}
   .ready{justify-content:center}
 }
+
+/* Vista previa honesta (2026-09-29): login y registro no están conectados a Atlas todavía. */
+.auth__box>p.auth__preview{padding:.8rem 1rem;border-radius:14px;border:1px solid var(--line-2);
+  background:rgba(255,255,255,.03);font-size:.9rem;line-height:1.5}
+.auth__preview b{color:var(--t1)}
+.form__note{font-size:.84rem;color:var(--t2);line-height:1.5;text-wrap:pretty}
+.form__soon{font-size:.84rem;color:var(--t2)}
+.auth .btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none;transform:none}

@@ -191,9 +191,10 @@
     }
 
     // TODO: aquí va la llamada real a la API de Atlas.
-    // Hoy solo confirma en pantalla: no hay backend ni se guarda nada.
+    // Hoy no hay backend ni se guarda nada, así que el mensaje (data-done del HTML) lo dice tal
+    // cual. No confirmar una cuenta, un código ni una sesión que no existen.
     msg.classList.remove('err');
-    msg.textContent = form.dataset.done || 'Listo.';
+    msg.textContent = form.dataset.done || 'Vista previa: no se guardó nada.';
     form.querySelector('button[type="submit"]').disabled = true;
   });
 })();

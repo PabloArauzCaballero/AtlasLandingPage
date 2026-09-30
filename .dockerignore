@@ -1,0 +1,7 @@
+.git
+.github
+docs
+concepto-*.html
+comparar.html
+build.py
+*.md

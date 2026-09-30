@@ -3,8 +3,8 @@
 window.ATLAS_LINKS = {
   // Dominio de la app web del cliente (sin «/» final). Ej.: 'https://app.tudominio.com'
   // Vacío = los botones de la landing siguen abriendo las páginas de muestra login.html / registro.html.
-  // TEST: la app web del cliente por IP (el filtro de Pablo bloquea *.sslip.io). Al tener dominio propio, cambiarlo aquí.
-  webApp: 'http://161.97.85.216',
+  // TEST: la app web del cliente en su dominio propio (no *.sslip.io: el filtro de Pablo lo bloquea).
+  webApp: 'https://atlas.consumerweb.test.arauzsoftware.com',
   // Rutas de la app web (consumer-app, expo-router).
   loginPath: '/ingresar',
   signupPath: '/registro',

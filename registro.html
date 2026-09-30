@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/auth.css">
 </head>
-<body>
+<body data-atlas-redirect="signup">
 
 <div class="aurora" aria-hidden="true">
   <span class="aurora__blob aurora__blob--1"></span>
@@ -181,7 +181,7 @@
         <p class="auth__msg" id="authMsg" role="status"></p>
       </form>
 
-      <p class="swap">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+      <p class="swap">¿Ya tienes cuenta? <a href="login.html" data-atlas-link="login">Inicia sesión</a></p>
     </div>
 
     <p class="auth__legal">© <span id="year">2026</span> Atlas · Términos y Política de Privacidad</p>
@@ -224,6 +224,8 @@
   </aside>
 </main>
 
+<script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/links.js"></script>
 </body>
 </html>

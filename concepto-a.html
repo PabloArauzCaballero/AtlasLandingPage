@@ -7,10 +7,13 @@
 <title>Atlas · Concepto A — Monograma</title>
 <meta name="description" content="Atlas es un crédito para comprar en comercios aliados de Bolivia: pagas una inicial y el resto en cuotas mensuales, sin tarjeta de crédito. Las condiciones dependen de tu perfil y las ves antes de aceptar.">
 
+<link rel="canonical" href="https://atlas.landing.test.arauzsoftware.com/">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://atlas.landing.test.arauzsoftware.com/">
+<meta property="og:locale" content="es_BO">
 <meta property="og:title" content="Atlas — Compra ahora, paga después">
 <meta property="og:description" content="Compra en comercios aliados y paga en cuotas. Ves las condiciones antes de aceptar.">
-<meta property="og:image" content="assets/img/logo-a.svg">
+<meta property="og:image" content="https://atlas.landing.test.arauzsoftware.com/assets/img/logo-app.png">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -130,8 +133,8 @@
       <a href="#lanzamiento" class="nav__link">Lanzamiento</a>
       <a href="#faq" class="nav__link">Preguntas</a>
       <span class="nav__gap" aria-hidden="true"></span>
-      <a href="login.html" class="nav__link nav__login">Iniciar sesión</a>
-      <a href="registro.html" class="btn btn--primary btn--sm nav__cta" data-magnetic><span>Crear cuenta</span></a>
+      <a href="login.html" data-atlas-link="login" class="nav__link nav__login">Iniciar sesión</a>
+      <a href="registro.html" data-atlas-link="signup" class="btn btn--primary btn--sm nav__cta" data-magnetic><span>Crear cuenta</span></a>
     </nav>
 
     <button type="button" class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
@@ -162,7 +165,7 @@
       </p>
 
       <div class="hero__cta" data-anim="fade" style="--d:620ms">
-        <a href="registro.html" class="btn btn--primary btn--lg" data-magnetic>
+        <a href="registro.html" data-atlas-link="signup" class="btn btn--primary btn--lg" data-magnetic>
           <span>Crear mi cuenta</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -689,7 +692,7 @@
         funciona igual. El directorio de comercios está dentro de la app.
       </p>
 
-      <a href="registro.html" class="btn btn--primary btn--lg" data-magnetic>
+      <a href="registro.html" data-atlas-link="signup" class="btn btn--primary btn--lg" data-magnetic>
         <span>Crear mi cuenta</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
@@ -795,7 +798,7 @@
       <p class="lead lead--left">Atlas funciona desde la app. Cuando se publique en las tiendas,
          ahí creas tu cuenta y pides tu evaluación.</p>
 
-      <a href="registro.html" class="btn btn--primary btn--lg" data-magnetic>
+      <a href="registro.html" data-atlas-link="signup" class="btn btn--primary btn--lg" data-magnetic>
         <span>Ver el registro</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
@@ -1024,7 +1027,7 @@
       <h3>Producto</h3>
       <a href="#tour">Cómo funciona</a><a href="#calculadora">Calculadora</a>
       <a href="#descarga">Descarga</a>
-      <a href="login.html">Iniciar sesión</a><a href="registro.html">Crear cuenta</a>
+      <a href="login.html" data-atlas-link="login">Iniciar sesión</a><a href="registro.html" data-atlas-link="signup">Crear cuenta</a>
     </nav>
     <nav class="foot__col" aria-label="Comercios">
       <h3>Comercios</h3>
@@ -1057,5 +1060,7 @@
 <script defer src="assets/js/geo-bolivia.js"></script>
 <script defer src="assets/js/mapa3d.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/links.js"></script>
 </body>
 </html>

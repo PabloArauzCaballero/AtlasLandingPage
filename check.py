@@ -9,6 +9,8 @@ Sin dependencias. Sale con código 1 y dice archivo, línea, frase y MOTIVO si e
 
 - un enlace muerto (`href="#"`), porque un botón que no lleva a ninguna parte promete algo
   que no existe (tiendas, redes, legales, recuperar clave);
+- en una página que se despliega, una referencia al panel de previsualización o a compare.css
+  (material de presentación, LND-06);
 - una frase de la lista prohibida: cada una salió de la auditoría del 2026-09-29 (informe 06,
   §A) y contradice el producto real (tasa por solicitud, cuotas mensuales, inicial 60 %, sin
   niveles, sin preaprobación, sin avisos de vencimiento, sin compra online...).
@@ -64,6 +66,12 @@ FORBIDDEN = [
 
 DEAD_LINK = re.compile(r'href\s*=\s*"#"')
 
+# Páginas que copia el Dockerfile: no pueden citar material de presentación (auditoría 2026-10-09,
+# LND-06: el panel de previsualización cambiaba la marca de la portada pública). Esos archivos
+# tampoco entran en la imagen (.dockerignore), así que citarlos sería además un 404.
+PUBLISHED = {"index.html", "login.html", "registro.html"}
+PRESENTATION_ONLY = re.compile(r'assets/(js/preview\.js|css/preview\.css|css/compare\.css)|id="preview"')
+
 
 def strip_comments(text: str, path: str) -> str:
     """Quita comentarios conservando los saltos de línea (para que las líneas cuadren)."""
@@ -86,6 +94,8 @@ def check(path: Path) -> list[str]:
     for n, line in enumerate(text.splitlines(), 1):
         if DEAD_LINK.search(line):
             problems.append(f"{path}:{n}: enlace muerto href=\"#\" → quítalo o márcalo como no disponible.")
+        if path.name in PUBLISHED and PRESENTATION_ONLY.search(line):
+            problems.append(f"{path}:{n}: material de presentación en una página publicada → no va a producción (LND-06).")
         for hay in (line, visible(line)):
             hit = None
             for pattern, why in FORBIDDEN:

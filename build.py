@@ -4,7 +4,7 @@ Genera las tres versiones de la landing, una por concepto de logo.
 
     python3 build.py
 
-Lee index.html (la versión de trabajo, con el panel de previsualización) y
+Lee index.html (la versión que se despliega; el panel de previsualización ya no está) y
 escribe concepto-a.html, concepto-b.html y concepto-c.html: el mismo sitio
 con un concepto fijo, sin el panel, y con una barrita para saltar entre los
 tres. Esas son las que se le muestran al cliente.
@@ -54,13 +54,18 @@ def build_one(src: str, slug: str, letter: str, name: str) -> str:
     h = src
 
     # 1 · Fuera el panel de previsualización: estas páginas van fijas
+    #     (desde la auditoría 2026-10-09, LND-06, index.html ya no lo lleva: se despliega tal cual;
+    #     los reemplazos de abajo quedan por si alguien lo vuelve a añadir a mano).
     h = h.replace(
         '<!-- Panel de previsualización · borrar estas 2 líneas y el bloque #preview al elegir concepto -->\n'
-        '<link rel="stylesheet" href="assets/css/preview.css">',
-        '<link rel="stylesheet" href="assets/css/compare.css">')
+        '<link rel="stylesheet" href="assets/css/preview.css">\n', '')
     h = re.sub(r'<!-- ══════════ PANEL DE PREVISUALIZACIÓN.*?</aside>\n\n',
                '', h, flags=re.S)
     h = h.replace('<script src="assets/js/preview.js"></script>\n', '')
+    # La barra de conceptos necesita compare.css (index.html no la carga).
+    h = h.replace('<link rel="stylesheet" href="assets/css/style.css">',
+                  '<link rel="stylesheet" href="assets/css/style.css">\n'
+                  '<link rel="stylesheet" href="assets/css/compare.css">', 1)
 
     # 2 · El concepto queda fijo en toda la página
     h = h.replace('<use href="#markA"/>', f'<use href="#mark{letter}"/>')

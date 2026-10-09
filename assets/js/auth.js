@@ -14,7 +14,8 @@
      de presentación.                                                   */
   (function markFromUrl() {
     const c = (new URLSearchParams(location.search).get('c') || 'a').toUpperCase();
-    if (!'ABC'.includes(c) || c === 'A') return;
+    // Lista cerrada: 'ABC'.includes(c) aceptaba «AB» o «BC» (subcadenas) y armaba #markAB.
+    if (!['A', 'B', 'C'].includes(c) || c === 'A') return;
     $$('use[href^="#mark"]').forEach((u) => u.setAttribute('href', '#mark' + c));
     // El favicon NO cambia con el concepto: es siempre el logo de la app.
     // Y que los enlaces internos no pierdan el concepto: volver al sitio

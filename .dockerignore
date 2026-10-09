@@ -5,3 +5,8 @@ concepto-*.html
 comparar.html
 build.py
 *.md
+# Panel de previsualización de marca y estilos de las páginas de presentación: no van a la
+# imagen pública (auditoría 2026-10-09, LND-06). check.py falla si una página publicada los cita.
+assets/js/preview.js
+assets/css/preview.css
+assets/css/compare.css

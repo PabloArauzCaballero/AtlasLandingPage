@@ -7,6 +7,8 @@
 <title>Atlas — Compra ahora, paga después | Crédito en cuotas</title>
 <meta name="description" content="Atlas es un crédito para comprar en comercios aliados de Bolivia: pagas una inicial y el resto en cuotas mensuales, sin tarjeta de crédito. Las condiciones dependen de tu perfil y las ves antes de aceptar.">
 
+<!-- TODO(LND-07): canonical y og:url apuntan a TEST, fijos. Antes de PROD hay que servirlos por
+     entorno (ver el TODO de assets/js/config.js); hoy PROD no existe, así que no se cambian a ciegas. -->
 <link rel="canonical" href="https://atlas.landing.test.arauzsoftware.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://atlas.landing.test.arauzsoftware.com/">
@@ -23,8 +25,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<!-- Panel de previsualización · borrar estas 2 líneas y el bloque #preview al elegir concepto -->
-<link rel="stylesheet" href="assets/css/preview.css">
 </head>
 <body>
 
@@ -1048,61 +1048,9 @@
   <svg class="up__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
-<!-- ══════════ PANEL DE PREVISUALIZACIÓN · TEMPORAL ══════════
-     Ver instrucciones de borrado en assets/css/preview.css -->
-<aside class="pv min" id="preview" aria-label="Previsualización de marca">
-  <button class="pv__head" type="button" aria-expanded="false">
-    <span class="pv__dot"></span>
-    <b>Previsualizar marca</b>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-  </button>
-
-  <div class="pv__body">
-    <div>
-      <p class="pv__label">Concepto</p>
-      <div class="pv__marks">
-        <button class="pv__mark" type="button" data-concept="A" aria-pressed="true">
-          <svg viewBox="14 12 92 96" aria-hidden="true"><use href="#markA"/></svg><span>A · Monograma</span>
-        </button>
-        <button class="pv__mark" type="button" data-concept="B" aria-pressed="false">
-          <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#markB"/></svg><span>B · Orbe</span>
-        </button>
-        <button class="pv__mark" type="button" data-concept="C" aria-pressed="false">
-          <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#markC"/></svg><span>C · Ascenso</span>
-        </button>
-      </div>
-    </div>
-
-    <div>
-      <p class="pv__label">Ruta de degradado</p>
-      <div class="pv__routes">
-        <button class="pv__route" type="button" data-route-key="blue" aria-pressed="true">
-          <i style="background:linear-gradient(145deg,#0C2C50,#0E7377 52%,#2BE0A8)"></i>
-          <span>Azul → Teal</span><em>rec.</em>
-        </button>
-        <button class="pv__route" type="button" data-route-key="teal" aria-pressed="false">
-          <i style="background:linear-gradient(145deg,#0B5563,#37E0B0)"></i>
-          <span>Teal → Menta</span>
-        </button>
-        <button class="pv__route" type="button" data-route-key="indigo" aria-pressed="false">
-          <i style="background:linear-gradient(145deg,#262F68,#7B86E6)"></i>
-          <span>Índigo → Periwinkle</span>
-        </button>
-        <button class="pv__route" type="button" data-route-key="gold" aria-pressed="false">
-          <i style="background:linear-gradient(145deg,#22314F,#E6C15E)"></i>
-          <span>Medianoche → Oro</span>
-        </button>
-      </div>
-    </div>
-
-    <p class="pv__note">Tu elección se guarda en este navegador. Este panel es solo para decidir: no va a producción.</p>
-  </div>
-</aside>
-
 <script defer src="assets/js/geo-bolivia.js"></script>
 <script defer src="assets/js/mapa3d.js"></script>
 <script src="assets/js/main.js"></script>
-<script src="assets/js/preview.js"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/links.js"></script>
 </body>

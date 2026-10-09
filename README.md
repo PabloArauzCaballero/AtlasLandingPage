@@ -19,8 +19,8 @@ asigna la evaluación de cada solicitud.
 > diagnóstico y una lista de errores concretos con su causa raíz. Está escrito para que otro
 > agente lo siga en un proyecto distinto, sin arrastrar nada de Atlas.
 
-**Sin build ni frameworks.** Se abre con doble clic y funciona offline (lo único que sale a
-la red son las fuentes de Google, con fallback al sistema).
+**Sin build ni frameworks.** Se abre con doble clic y funciona offline: nada sale a la red
+(las fuentes están autoalojadas en `assets/fonts/`).
 
 La única dependencia es **Three.js**, vendorizada en `assets/js/vendor/` — no se llama a
 ningún CDN. Sirve solo para el mapa decorativo de la sección Cobertura, y **se descarga bajo
@@ -174,8 +174,11 @@ Los `assets/img/logo-*.svg` son los mismos símbolos como archivos sueltos, con 
 se usan para el favicon y sirven para pasarlos a diseño o a la app.
 
 ### Tipografía
-Sora (display) + Manrope (texto), como en el manual. Se cargan por Google Fonts en el `<head>`
-y se declaran en `--display` / `--body`.
+Sora (display) + Manrope (texto), como en el manual. Están **autoalojadas** (LND-05): los woff2
+variables (pesos 400–800, subconjuntos latin y latin-ext) viven en `assets/fonts/` con su licencia
+SIL OFL 1.1 (`Sora-OFL.txt`, `Manrope-OFL.txt`), se declaran en `assets/css/fonts.css` y se usan
+por `--display` / `--body`. La CSP (`security-headers.conf`) sólo admite `'self'` en `style-src` y
+`font-src`: no vuelvas a enlazar Google Fonts ni otro CDN.
 
 ## Contenido que hay que reemplazar antes de publicar
 

@@ -118,7 +118,9 @@ SOUL = {
 def build_compare(src: str) -> str:
     """Portada con los tres conceptos, para abrir delante del cliente."""
     defs = re.search(r'<svg width="0" height="0".*?</defs></svg>', src, re.S).group(0)
-    fonts = re.search(r'<link href="https://fonts\.googleapis\.com[^>]*>', src).group(0)
+    # Fuentes autoalojadas (LND-05): los preload y fonts.css, tal como los lleva index.html.
+    fonts = re.search(r'<link rel="preload" href="assets/fonts/.*?<link rel="stylesheet" href="assets/css/fonts\.css">',
+                      src, re.S).group(0)
 
     cards = []
     for slug, letter, name, claim in CONCEPTS:
@@ -165,8 +167,6 @@ def build_compare(src: str) -> str:
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="assets/img/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {fonts}
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/compare.css">
